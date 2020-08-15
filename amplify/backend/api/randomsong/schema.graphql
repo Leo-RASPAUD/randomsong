@@ -1,4 +1,4 @@
-type Song @model {
+type Song @model @auth(rules: [{ allow: private, provider: userPools }, { allow: public, provider: iam }]) {
   id: ID!
   name: String!
   description: String

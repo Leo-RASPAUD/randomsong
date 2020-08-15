@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, Button } from 'react-native';
-import { API, graphqlOperation } from 'aws-amplify';
+import { API } from 'aws-amplify';
+import { GraphQLResult, GRAPHQL_AUTH_MODE } from '@aws-amplify/api';
+import Error from './Error';
 import { listSongs } from '../graphql/queries';
-import { createSong } from '../graphql/mutations';
 import type { Song } from '../models';
+import { ListSongsQuery } from '../API';
 
 const styles = StyleSheet.create({
   container: { flex: 1, justifyContent: 'center', padding: 20 },
@@ -13,33 +15,32 @@ const styles = StyleSheet.create({
 });
 
 const Details = ({ navigation }) => {
-  const [songs, setSongs] = useState<Array<Song>>([]);
+  const [songs, setSongs] = useState<Song[]>([]);
   const [loading, setLoading] = useState<Boolean>(true);
   const [currentSong, setcurrentSong] = useState<Song>();
-
-  // async function addSong(song) {
-  //   try {
-  //     await API.graphql(
-  //       graphqlOperation(createSong, {
-  //         input: song,
-  //       }),
-  //     );
-  //   } catch (err) {
-  //     console.log('error creating todo:', err);
-  //   }
-  // }
+  const [error, setError] = useState<Boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<String>('');
 
   const fetchSongs = async () => {
     try {
-      const songsData = await API.graphql(graphqlOperation(listSongs, { limit: 500 }));
-      const songs = songsData.data.listSongs.items;
-      const song = songs[Math.floor(Math.random() * songs.length)];
-      setSongs(songs);
-      setcurrentSong(song);
+      const songsData = (await API.graphql({
+        query: listSongs,
+        variables: { limit: 500 },
+        authMode: GRAPHQL_AUTH_MODE.AWS_IAM,
+      })) as GraphQLResult<ListSongsQuery>;
+
+      const songs = songsData.data?.listSongs?.items as Song[];
+      if (songs) {
+        const song = songs[Math.floor(Math.random() * songs.length)];
+        setSongs(songs);
+        setcurrentSong(song);
+      }
       setLoading(false);
-    } catch (err) {
-      console.log('error fetching todos');
-      console.log(err);
+      setError(false);
+    } catch (error) {
+      setLoading(false);
+      setError(true);
+      setErrorMessage(typeof error === 'string' ? error : 'Unknown error');
     }
   };
 
@@ -47,9 +48,20 @@ const Details = ({ navigation }) => {
     fetchSongs();
   }, []);
 
+  if (error) {
+    return <Error errorMessage={errorMessage} />;
+  }
+
+  if (!loading && !currentSong) {
+    return <Text>Could not find a song</Text>;
+  }
+
+  if (loading) {
+    return <Text>Loading...</Text>;
+  }
+
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      {loading && <Text>Loading ...</Text>}
       {!loading && currentSong && (
         <>
           <Text>Song of the day</Text>

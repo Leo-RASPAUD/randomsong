@@ -13,7 +13,15 @@
         },
         "categories": {
             "auth": {
-                "randomsong1c2a91d6": {}
+                "randomsong1c2a91d6": {},
+                "userPoolGroups": {}
+            },
+            "function": {
+                "randomsong1c2a91d6CustomMessage": {
+                    "REDIRECTURL": "https://randomsong.com",
+                    "EMAILSUBJECT": "Confirmation email",
+                    "EMAILMESSAGE": "Confirmation email"
+                }
             }
         }
     }
