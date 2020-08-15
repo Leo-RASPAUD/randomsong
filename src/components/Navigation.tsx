@@ -4,6 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Profile from './Profile';
 import NewSong from './NewSong';
+import Routes from '../routes';
 
 const styles = StyleSheet.create({
   container: {
@@ -20,8 +21,8 @@ const PublicNavigator = (props) => {
   console.log(1, props);
   return (
     <Tab.Navigator initialRouteName="New song">
-      <Tab.Screen name="New song" component={NewSong} />
-      <Tab.Screen name="Profile" component={Profile} />
+      <Tab.Screen name={Routes.NEW_SONG} component={NewSong} />
+      <Tab.Screen name={Routes.PROFILE} component={Profile} />
     </Tab.Navigator>
   );
 };

@@ -65,6 +65,7 @@ const Details = ({ navigation }) => {
       {!loading && currentSong && (
         <>
           <Text>Song of the day</Text>
+          <Button onPress={fetchSongs} title="Get a new song" />
           <View style={styles.name}>
             <Text style={styles.songName}>{currentSong.name}</Text>
             <Text>{currentSong.description}</Text>
