@@ -10,6 +10,7 @@ export const onCreateSong = /* GraphQL */ `
       description
       difficulty
       band
+      style
       createdAt
       updatedAt
     }
@@ -23,6 +24,7 @@ export const onUpdateSong = /* GraphQL */ `
       description
       difficulty
       band
+      style
       createdAt
       updatedAt
     }
@@ -36,6 +38,7 @@ export const onDeleteSong = /* GraphQL */ `
       description
       difficulty
       band
+      style
       createdAt
       updatedAt
     }

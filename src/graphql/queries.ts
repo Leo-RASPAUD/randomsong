@@ -10,6 +10,7 @@ export const getSong = /* GraphQL */ `
       description
       difficulty
       band
+      style
       createdAt
       updatedAt
     }
@@ -28,6 +29,7 @@ export const listSongs = /* GraphQL */ `
         description
         difficulty
         band
+        style
         createdAt
         updatedAt
       }
