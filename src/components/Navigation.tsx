@@ -1,33 +1,27 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Profile from './Profile';
 import NewSong from './NewSong';
 import Routes from '../routes';
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export type RootTabParamList = {
+  [Routes.NEW_SONG]: undefined;
+  [Routes.PROFILE]: undefined;
+};
 
-const Tab = createBottomTabNavigator();
+const Tab = createBottomTabNavigator<RootTabParamList>();
 
-const PublicNavigator = (props) => {
-  console.log(1, props);
+const PublicNavigator = () => {
   return (
-    <Tab.Navigator initialRouteName="New song">
+    <Tab.Navigator>
       <Tab.Screen name={Routes.NEW_SONG} component={NewSong} />
       <Tab.Screen name={Routes.PROFILE} component={Profile} />
     </Tab.Navigator>
   );
 };
 
-const Navigation = () => {
+const Navigation: React.FC = () => {
   return (
     <NavigationContainer>
       <PublicNavigator />
