@@ -4,14 +4,21 @@ import { API } from 'aws-amplify';
 import { GraphQLResult, GRAPHQL_AUTH_MODE } from '@aws-amplify/api';
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 
-import Error from './Error';
-import { RootTabParamList } from './Navigation';
+import Error from '../components/Error';
+import { RootTabParamList } from '../components/Navigation';
 
 import { listSongs } from '../graphql/queries';
 import type { Song } from '../models';
 import { ListSongsQuery } from '../API';
 import useSongs from '../store/songs';
 import Routes from '../routes';
+
+const styles = StyleSheet.create({
+  container: { flex: 1, justifyContent: 'center', padding: 20 },
+  name: { marginBottom: 15 },
+  input: { height: 50, backgroundColor: '#ddd', marginBottom: 10, padding: 8 },
+  songName: { fontSize: 18 },
+});
 
 type NewSongScreenNavigationProp = BottomTabNavigationProp<RootTabParamList, Routes.NEW_SONG>;
 
@@ -78,10 +85,3 @@ const Details: React.FC<Props> = () => {
 };
 
 export default Details;
-
-const styles = StyleSheet.create({
-  container: { flex: 1, justifyContent: 'center', padding: 20 },
-  name: { marginBottom: 15 },
-  input: { height: 50, backgroundColor: '#ddd', marginBottom: 10, padding: 8 },
-  songName: { fontSize: 18 },
-});

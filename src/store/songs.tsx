@@ -1,16 +1,16 @@
 import { createStore, createHook, StoreActionApi } from 'react-sweet-state';
 import type { Song } from '../models';
 
-type State = {
+export type SongsState = {
   songs: Song[];
   skippedSongs: Song[];
   currentSong: Song | null;
 };
 
-type StoreApi = StoreActionApi<State>;
+type StoreApi = StoreActionApi<SongsState>;
 type Actions = typeof actions;
 
-const initialState: State = {
+const initialState: SongsState = {
   songs: [],
   skippedSongs: [],
   currentSong: null,
@@ -36,14 +36,20 @@ const skipSong = (songToSkip: Song) => ({ setState, getState }: StoreApi) => {
   });
 };
 
+const setInitialSongsState = (state: SongsState) => ({ setState }: StoreApi) => {
+  setState(state);
+};
+
 const actions = {
   initSongs,
   skipSong,
+  setInitialSongsState,
 };
 
-const Store = createStore<State, Actions>({
+const Store = createStore<SongsState, Actions>({
   initialState,
   actions,
+  name: 'songs',
 });
 
 const useSongs = createHook(Store);

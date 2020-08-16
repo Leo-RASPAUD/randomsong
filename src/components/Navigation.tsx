@@ -1,8 +1,8 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import Profile from './Profile';
-import NewSong from './NewSong';
+import Profile from '../screens/Profile';
+import NewSong from '../screens/NewSong';
 import Routes from '../routes';
 
 export type RootTabParamList = {
