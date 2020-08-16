@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { View, Button } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import { useForm } from 'react-hook-form';
 import { Auth } from 'aws-amplify';
-import Input from './Input';
-import Error from './Error';
+import Input from '../components/Input';
+import Error from '../components/Error';
 import useUser from '../store/user';
+import Routes from '../routes';
 
 type FormData = {
   username: string;
@@ -14,6 +16,8 @@ type FormData = {
 const Login: React.FC = () => {
   const { handleSubmit, control, errors } = useForm<FormData>();
   const [errorMessage, setErrorMessage] = useState<string>('');
+  const navigation = useNavigation();
+
   const [, { setUser }] = useUser();
 
   const onSubmit = async ({ username, password }: FormData) => {
@@ -21,6 +25,7 @@ const Login: React.FC = () => {
     try {
       const user = await Auth.signIn(username, password);
       setUser(user);
+      navigation.navigate(Routes.PROFILE);
     } catch (error) {
       console.log(error);
       if (typeof error === 'string') {
@@ -47,6 +52,7 @@ const Login: React.FC = () => {
       />
       {errorMessage.length > 0 && <Error errorMessage={errorMessage} />}
       <Button title="Login" onPress={handleSubmit(onSubmit)} />
+      <Button title="Subscribe" onPress={() => navigation.navigate(Routes.SIGNUP)} />
     </View>
   );
 };

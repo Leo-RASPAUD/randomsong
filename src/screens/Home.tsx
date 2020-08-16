@@ -11,7 +11,7 @@ import { listSongs } from '../graphql/queries';
 import type { Song } from '../models';
 import { ListSongsQuery } from '../API';
 import useSongs from '../store/songs';
-import Routes from '../routes';
+import Routes from '../navigation/routes';
 
 const styles = StyleSheet.create({
   container: { flex: 1, justifyContent: 'center', padding: 20 },
@@ -20,13 +20,13 @@ const styles = StyleSheet.create({
   songName: { fontSize: 18 },
 });
 
-type NewSongScreenNavigationProp = BottomTabNavigationProp<RootTabParamList, Routes.NEW_SONG>;
+type NewSongScreenNavigationProp = BottomTabNavigationProp<RootTabParamList, Routes.HOME>;
 
 type Props = {
   navigation: NewSongScreenNavigationProp;
 };
 
-const Details: React.FC<Props> = () => {
+const Home: React.FC<Props> = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [{ songs, currentSong }, { skipSong, initSongs }] = useSongs();
@@ -84,4 +84,4 @@ const Details: React.FC<Props> = () => {
   );
 };
 
-export default Details;
+export default Home;
