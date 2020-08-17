@@ -16,14 +16,15 @@ const App: React.FC = () => {
   const [, { setInitialUserState }] = useUser();
 
   const setInitialState = async () => {
-    const initalStoreData = await withAsyncStorage.getData();
-    if (initalStoreData) {
+    const initialStoreData = await withAsyncStorage.getData();
+    console.log('init', initialStoreData);
+    if (initialStoreData) {
       setInitialSongsState({
-        currentSong: initalStoreData?.currentSong,
-        skippedSongs: initalStoreData?.skippedSongs,
-        songs: initalStoreData?.songs,
+        currentSong: initialStoreData?.currentSong,
+        skippedSongs: initialStoreData?.skippedSongs,
+        songs: initialStoreData?.songs,
       });
-      setInitialUserState({ user: initalStoreData?.user });
+      setInitialUserState({ user: initialStoreData?.user });
     }
   };
 

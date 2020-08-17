@@ -16,9 +16,10 @@ const initialState: SongsState = {
   currentSong: null,
 };
 
-const initSongs = (songs: Song[]) => ({ setState }: StoreApi) => {
+const initSongs = (songs: Song[]) => ({ getState, setState }: StoreApi) => {
   const currentSong = songs[Math.floor(Math.random() * songs.length)];
   setState({
+    ...getState(),
     songs,
     currentSong,
   });

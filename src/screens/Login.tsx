@@ -7,6 +7,7 @@ import Input from '../components/Input';
 import Error from '../components/Error';
 import useUser from '../store/user';
 import Routes from '../navigation/routes';
+import formatErrorMessage from '../utils/formatErrorMessage';
 
 type FormData = {
   username: string;
@@ -24,17 +25,10 @@ const Login: React.FC = () => {
     setErrorMessage('');
     try {
       const user = await Auth.signIn(username, password);
-      setUser(user);
+      setUser({ username: user?.attributes?.email });
       navigation.navigate(Routes.PROFILE);
     } catch (error) {
-      console.log(error);
-      if (typeof error === 'string') {
-        setErrorMessage(error);
-      } else if (error.message) {
-        setErrorMessage(error.message);
-      } else {
-        setErrorMessage('Error while signing in');
-      }
+      setErrorMessage(formatErrorMessage(error));
     }
   };
 
@@ -52,7 +46,6 @@ const Login: React.FC = () => {
       />
       {errorMessage.length > 0 && <Error errorMessage={errorMessage} />}
       <Button title="Login" onPress={handleSubmit(onSubmit)} />
-      <Button title="Subscribe" onPress={() => navigation.navigate(Routes.SIGNUP)} />
     </View>
   );
 };

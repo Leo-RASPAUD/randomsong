@@ -1,8 +1,7 @@
 import { createStore, createHook, StoreActionApi } from 'react-sweet-state';
-import type { Song } from '../models';
 
-type User = {
-  id: string;
+export type User = {
+  username: string;
 };
 
 export type UserState = {
@@ -16,8 +15,10 @@ const initialState: UserState = {
   user: null,
 };
 
-const setUser = (user: Song) => ({ setState }: StoreApi) => {
+const setUser = (user: User | undefined) => ({ getState, setState }: StoreApi) => {
+  console.log(user);
   setState({
+    ...getState(),
     user,
   });
 };
@@ -26,9 +27,14 @@ const setInitialUserState = (state: UserState) => ({ setState }: StoreApi) => {
   setState(state);
 };
 
+const clearUser = () => ({ setState }: StoreApi) => {
+  setState(initialState);
+};
+
 const actions = {
   setUser,
   setInitialUserState,
+  clearUser,
 };
 
 const Store = createStore<UserState, Actions>({

@@ -1,22 +1,20 @@
-import React from 'react';
-import { Text } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text } from 'react-native';
 import useUser from '../store/user';
 
-// type ProfileScreenNavigationProp = BottomTabNavigationProp<RootTabParamList, Routes.PROFILE>;
-
-// type Props = {
-//   navigation: ProfileScreenNavigationProp;
-// };
-
-// type Props = {
-//   navigation: DrawerNavigationProp<RootTabParamList>;
-// };
-
-const Profile: React.FC = () => {
-  const [{ user }] = useUser();
-  console.log(user);
-
-  return <Text>Connected</Text>;
+type FormData = {
+  username: string;
+  password: string;
+  confirmationCode: string;
 };
 
-export default Profile;
+const Login: React.FC = () => {
+  const [{ user }] = useUser();
+  return (
+    <View>
+      <Text>Welcome {user?.username}</Text>
+    </View>
+  );
+};
+
+export default Login;

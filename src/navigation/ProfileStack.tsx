@@ -38,6 +38,7 @@ const LoginSignupTabs = () => {
 
 const ProfileStack: React.FC = () => {
   const [{ user }] = useUser();
+  console.log(user);
 
   return (
     <Stack.Navigator>

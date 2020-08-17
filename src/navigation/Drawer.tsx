@@ -1,15 +1,10 @@
 import React from 'react';
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import Routes from './routes';
+import Routes, { RoutesParamsList } from './routes';
 import HomeStack from './HomeStack';
 import ProfileStack from './ProfileStack';
 
-export type DrawerTypes = {
-  [Routes.HOME]: undefined;
-  [Routes.PROFILE]: undefined;
-};
-
-const DrawerNav = createDrawerNavigator<DrawerTypes>();
+const DrawerNav = createDrawerNavigator<RoutesParamsList>();
 
 const Drawer: React.FC = () => {
   return (
