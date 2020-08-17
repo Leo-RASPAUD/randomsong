@@ -2,16 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, Button } from 'react-native';
 import { API } from 'aws-amplify';
 import { GraphQLResult, GRAPHQL_AUTH_MODE } from '@aws-amplify/api';
-import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 
 import Error from '../components/Error';
-import { RootTabParamList } from '../components/Navigation';
 
 import { listSongs } from '../graphql/queries';
 import type { Song } from '../models';
 import { ListSongsQuery } from '../API';
 import useSongs from '../store/songs';
-import Routes from '../routes';
 
 const styles = StyleSheet.create({
   container: { flex: 1, justifyContent: 'center', padding: 20 },
@@ -20,13 +17,7 @@ const styles = StyleSheet.create({
   songName: { fontSize: 18 },
 });
 
-type NewSongScreenNavigationProp = BottomTabNavigationProp<RootTabParamList, Routes.NEW_SONG>;
-
-type Props = {
-  navigation: NewSongScreenNavigationProp;
-};
-
-const Details: React.FC<Props> = () => {
+const Home: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [{ songs, currentSong }, { skipSong, initSongs }] = useSongs();
@@ -84,4 +75,4 @@ const Details: React.FC<Props> = () => {
   );
 };
 
-export default Details;
+export default Home;

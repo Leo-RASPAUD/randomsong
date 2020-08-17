@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import Amplify from 'aws-amplify';
-import Navigation from './src/components/Navigation';
+import { NavigationContainer } from '@react-navigation/native';
+import Drawer from './src/navigation/Drawer';
 import './src/middlewares';
 import config from './aws-exports';
 
@@ -30,7 +31,11 @@ const App: React.FC = () => {
     setInitialState();
   }, []);
 
-  return <Navigation />;
+  return (
+    <NavigationContainer>
+      <Drawer />
+    </NavigationContainer>
+  );
 };
 
 export default App;
