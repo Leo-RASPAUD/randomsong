@@ -3,6 +3,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import Home from '../screens/Home';
 import HeaderLeft from '../components/HeaderLeft';
 import HeaderRight from '../components/HeaderRight';
+
 const Stack = createStackNavigator();
 
 const HomeStack: React.FC = () => {

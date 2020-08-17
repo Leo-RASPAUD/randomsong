@@ -1,25 +1,22 @@
 import React from 'react';
-import { Text, View } from 'react-native';
-import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
-import Routes from '../navigation/routes';
-import { RootTabParamList } from '../components/Navigation';
+import { Text } from 'react-native';
+import useUser from '../store/user';
 
-type ProfileScreenNavigationProp = BottomTabNavigationProp<RootTabParamList, Routes.PROFILE>;
+// type ProfileScreenNavigationProp = BottomTabNavigationProp<RootTabParamList, Routes.PROFILE>;
 
-type Props = {
-  navigation: ProfileScreenNavigationProp;
-};
+// type Props = {
+//   navigation: ProfileScreenNavigationProp;
+// };
 
 // type Props = {
 //   navigation: DrawerNavigationProp<RootTabParamList>;
 // };
 
-const Home: React.FC<Props> = () => {
-  return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>Profile screen</Text>
-    </View>
-  );
+const Profile: React.FC = () => {
+  const [{ user }] = useUser();
+  console.log(user);
+
+  return <Text>Connected</Text>;
 };
 
-export default Home;
+export default Profile;

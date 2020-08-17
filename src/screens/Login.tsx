@@ -6,7 +6,7 @@ import { Auth } from 'aws-amplify';
 import Input from '../components/Input';
 import Error from '../components/Error';
 import useUser from '../store/user';
-import Routes from '../routes';
+import Routes from '../navigation/routes';
 
 type FormData = {
   username: string;
