@@ -16,7 +16,6 @@ const initialState: UserState = {
 };
 
 const setUser = (user: User | undefined) => ({ getState, setState }: StoreApi) => {
-  console.log(user);
   setState({
     ...getState(),
     user,

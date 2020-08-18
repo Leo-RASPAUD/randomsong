@@ -1,8 +1,8 @@
 {
-    "identityPoolName": "randomsong1c2a91d6_identitypool_1c2a91d6",
+    "identityPoolName": "randomsongcd2f6a94_identitypool_cd2f6a94",
     "allowUnauthenticatedIdentities": false,
-    "resourceNameTruncated": "random1c2a91d6",
-    "userPoolName": "randomsong1c2a91d6_userpool_1c2a91d6",
+    "resourceNameTruncated": "randomcd2f6a94",
+    "userPoolName": "randomsongcd2f6a94_userpool_cd2f6a94",
     "autoVerifiedAttributes": [
         "email"
     ],
@@ -28,10 +28,10 @@
     "userpoolClientReadAttributes": [
         "email"
     ],
-    "userpoolClientLambdaRole": "random1c2a91d6_userpoolclient_lambda_role",
+    "userpoolClientLambdaRole": "randomcd2f6a94_userpoolclient_lambda_role",
     "userpoolClientSetAttributes": false,
-    "sharedId": "1c2a91d6",
-    "resourceName": "randomsong1c2a91d6",
+    "sharedId": "cd2f6a94",
+    "resourceName": "randomsongcd2f6a94",
     "authSelections": "identityPoolAndUserPool",
     "authRoleArn": {
         "Fn::GetAtt": [
@@ -46,25 +46,18 @@
         ]
     },
     "useDefault": "defaultSocial",
-    "usernameAttributes": [
-        "email"
-    ],
-    "userPoolGroupList": [
-        "randomsong"
-    ],
-    "dependsOn": [],
-    "userPoolGroups": false,
-    "adminQueries": false,
-    "triggers": "{}",
     "hostedUI": true,
-    "parentStack": {
-        "Ref": "AWS::StackId"
-    },
-    "permissions": [],
-    "hostedUIDomainName": "randomsong13830463-13830463",
+    "triggers": "{}",
+    "hostedUIDomainName": "randomsongcd2f6a94-cd2f6a94",
     "authProvidersUserPool": [
         "Google"
     ],
     "hostedUIProviderMeta": "[{\"ProviderName\":\"Google\",\"authorize_scopes\":\"openid email profile\",\"AttributeMapping\":{\"email\":\"email\",\"username\":\"sub\"}}]",
-    "oAuthMetadata": "{\"AllowedOAuthFlows\":[\"code\"],\"AllowedOAuthScopes\":[\"phone\",\"email\",\"openid\",\"profile\",\"aws.cognito.signin.user.admin\"],\"CallbackURLs\":[\"exp://127.0.0.1:19000/--/\"],\"LogoutURLs\":[\"exp://127.0.0.1:19000/--/\"]}"
+    "oAuthMetadata": "{\"AllowedOAuthFlows\":[\"code\"],\"AllowedOAuthScopes\":[\"phone\",\"email\",\"openid\",\"profile\",\"aws.cognito.signin.user.admin\"],\"CallbackURLs\":[\"exp://10.26.121.107/--/\"],\"LogoutURLs\":[\"exp://10.26.121.107/--/\"]}",
+    "userPoolGroupList": [],
+    "parentStack": {
+        "Ref": "AWS::StackId"
+    },
+    "permissions": [],
+    "dependsOn": []
 }
