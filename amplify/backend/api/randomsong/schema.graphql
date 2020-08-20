@@ -6,3 +6,31 @@ type Song @model @auth(rules: [{ allow: private, provider: userPools }, { allow:
   band: String!
   style: String
 }
+
+type SongRating
+  @model
+  @auth(rules: [{ allow: private, provider: userPools }])
+  @key(name: "byUserId", fields: ["userId"]) {
+  id: ID!
+  userId: ID!
+  rating: Int!
+}
+
+type SongSkipped
+  @model
+  @auth(rules: [{ allow: private, provider: userPools }])
+  @key(name: "byUserId", fields: ["userId"]) {
+  id: ID!
+  userId: ID!
+}
+
+type User
+  @model
+  @auth(rules: [{ allow: private, provider: userPools }])
+  @key(name: "byUsername", fields: ["username"]) {
+  id: ID!
+  username: String!
+  email: String!
+  songsSkipped: [SongSkipped] @connection(keyName: "byUserId", fields: ["id"])
+  songsRating: [SongRating] @connection(keyName: "byUserId", fields: ["id"])
+}

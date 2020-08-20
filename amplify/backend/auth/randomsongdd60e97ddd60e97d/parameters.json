@@ -1,8 +1,8 @@
 {
-    "identityPoolName": "randomsongcd2f6a94_identitypool_cd2f6a94",
-    "allowUnauthenticatedIdentities": false,
-    "resourceNameTruncated": "randomcd2f6a94",
-    "userPoolName": "randomsongcd2f6a94_userpool_cd2f6a94",
+    "identityPoolName": "randomsongdd60e97d_identitypool_dd60e97d",
+    "allowUnauthenticatedIdentities": true,
+    "resourceNameTruncated": "randomdd60e97d",
+    "userPoolName": "randomsongdd60e97d_userpool_dd60e97d",
     "autoVerifiedAttributes": [
         "email"
     ],
@@ -28,11 +28,19 @@
     "userpoolClientReadAttributes": [
         "email"
     ],
-    "userpoolClientLambdaRole": "randomcd2f6a94_userpoolclient_lambda_role",
+    "userpoolClientLambdaRole": "randomdd60e97d_userpoolclient_lambda_role",
     "userpoolClientSetAttributes": false,
-    "sharedId": "cd2f6a94",
-    "resourceName": "randomsongcd2f6a94",
+    "useDefault": "manual",
     "authSelections": "identityPoolAndUserPool",
+    "resourceName": "randomsongdd60e97ddd60e97d",
+    "thirdPartyAuth": false,
+    "userPoolGroups": true,
+    "adminQueries": false,
+    "triggers": "{}",
+    "hostedUI": false,
+    "userPoolGroupList": [
+        "randomsong"
+    ],
     "authRoleArn": {
         "Fn::GetAtt": [
             "AuthRole",
@@ -45,16 +53,6 @@
             "Arn"
         ]
     },
-    "useDefault": "defaultSocial",
-    "hostedUI": true,
-    "triggers": "{}",
-    "hostedUIDomainName": "randomsongcd2f6a94-cd2f6a94",
-    "authProvidersUserPool": [
-        "Google"
-    ],
-    "hostedUIProviderMeta": "[{\"ProviderName\":\"Google\",\"authorize_scopes\":\"openid email profile\",\"AttributeMapping\":{\"email\":\"email\",\"username\":\"sub\"}}]",
-    "oAuthMetadata": "{\"AllowedOAuthFlows\":[\"code\"],\"AllowedOAuthScopes\":[\"phone\",\"email\",\"openid\",\"profile\",\"aws.cognito.signin.user.admin\"],\"CallbackURLs\":[\"exp://10.26.121.107/--/\"],\"LogoutURLs\":[\"exp://10.26.121.107/--/\"]}",
-    "userPoolGroupList": [],
     "parentStack": {
         "Ref": "AWS::StackId"
     },

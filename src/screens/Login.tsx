@@ -8,7 +8,6 @@ import Error from '../components/Error';
 import useUser from '../store/user';
 import Routes from '../navigation/routes';
 import formatErrorMessage from '../utils/formatErrorMessage';
-import type { CognitoHostedUIIdentityProvider } from '@aws-amplify/auth';
 
 type FormData = {
   username: string;
@@ -63,13 +62,13 @@ const Login: React.FC = () => {
     }
   };
 
-  const federatedSignin = async () => {
-    try {
-      Auth.federatedSignIn({ provider: 'Google' as CognitoHostedUIIdentityProvider });
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  // const federatedSignin = async () => {
+  //   try {
+  //     Auth.federatedSignIn({ provider: 'Google' as CognitoHostedUIIdentityProvider });
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   if (displayForgotPassword) {
     return (
@@ -103,7 +102,7 @@ const Login: React.FC = () => {
       {errorMessage.length > 0 && <Error errorMessage={errorMessage} />}
       <Button title="Login" onPress={handleSubmit(onSubmit)} />
       <Button title="Forgot password" onPress={() => setDisplayForgotPassword(true)} />
-      <Button title="Sign in with Google" onPress={federatedSignin} />
+      {/* <Button title="Sign in with Google" onPress={federatedSignin} /> */}
     </View>
   );
 };

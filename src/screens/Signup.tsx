@@ -2,12 +2,16 @@ import React, { useState } from 'react';
 import { View, Button } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useForm } from 'react-hook-form';
-import { Auth } from 'aws-amplify';
+import { Auth, API } from 'aws-amplify';
+import { GraphQLResult, GRAPHQL_AUTH_MODE, graphqlOperation } from '@aws-amplify/api';
 import Input from '../components/Input';
 import Error from '../components/Error';
 import useUser, { User } from '../store/user';
 import Routes from '../navigation/routes';
 import formatErrorMessage from '../utils/formatErrorMessage';
+import { createUser } from '../graphql/mutations';
+import { getUser, getUserByUsername } from '../graphql/queries';
+import { GetUserByUsernameQuery, CreateUserMutation, GetUserQuery } from '../API';
 
 type FormData = {
   username: string;
@@ -19,28 +23,71 @@ const Login: React.FC = () => {
   const { handleSubmit, control, errors } = useForm<FormData>();
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [displayConfirmation, setDisplayConfirmation] = useState<boolean>(false);
-  const [currentUser, setCurrentUser] = useState<User>();
+  const [currentPassword, setCurrentPassword] = useState<string>('');
   const navigation = useNavigation();
 
   const [, { setUser }] = useUser();
 
+  const getAuthUser = async () => {
+    try {
+      return await Auth.currentAuthenticatedUser();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const signUp = async ({ username, password }: FormData) => {
     try {
-      const { user } = ((await Auth.signUp(username, password)) as unknown) as { user: { username: string } };
-      setCurrentUser({ username: user?.username });
+      const { user } = ((await Auth.signUp({
+        username,
+        password,
+        attributes: {
+          email: username,
+        },
+      })) as unknown) as { user: { username: string } };
       setDisplayConfirmation(true);
+      setCurrentPassword(password);
     } catch (error) {
       setErrorMessage(formatErrorMessage(error));
     }
   };
 
+  const cleanup = async (error?: string) => {
+    const user = await getAuthUser();
+    console.log(error);
+    setDisplayConfirmation(false);
+    user.deleteUser((deleteError) => {
+      console.log(deleteError);
+      setErrorMessage('Error while creating the user');
+    });
+  };
+
   const confirmCode = async ({ username, confirmationCode }: FormData) => {
     try {
       await Auth.confirmSignUp(username, confirmationCode);
-      setUser(currentUser);
-      navigation.navigate(Routes.PROFILE);
+      await Auth.signIn(username, currentPassword);
+      const resultCreate = (await API.graphql(
+        graphqlOperation(createUser, { input: { username, email: username } }),
+      )) as GraphQLResult<CreateUserMutation>;
+      const resultGetUser = (await API.graphql(
+        graphqlOperation(getUser, { id: resultCreate?.data?.createUser?.id }),
+      )) as GraphQLResult<GetUserQuery>;
+      if (resultGetUser?.data?.getUser) {
+        console.log(resultGetUser.data.getUser);
+        const { username, id, email, songsSkipped, songsRating } = resultGetUser?.data?.getUser;
+        setUser({
+          username,
+          id,
+          email,
+          songsSkipped,
+          songsRating,
+        });
+        navigation.navigate(Routes.PROFILE);
+      } else {
+        cleanup();
+      }
     } catch (error) {
-      setErrorMessage(formatErrorMessage(error));
+      cleanup(error);
     }
   };
 
