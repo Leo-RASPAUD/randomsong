@@ -105,6 +105,26 @@ export const schema = {
                     "type": "Int",
                     "isRequired": true,
                     "attributes": []
+                },
+                "songId": {
+                    "name": "songId",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "song": {
+                    "name": "song",
+                    "isArray": false,
+                    "type": {
+                        "model": "Song"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "association": {
+                        "connectionType": "HAS_ONE",
+                        "associatedWith": "id"
+                    }
                 }
             },
             "syncable": true,
@@ -158,6 +178,26 @@ export const schema = {
                     "type": "ID",
                     "isRequired": true,
                     "attributes": []
+                },
+                "songId": {
+                    "name": "songId",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "song": {
+                    "name": "song",
+                    "isArray": false,
+                    "type": {
+                        "model": "Song"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "association": {
+                        "connectionType": "HAS_ONE",
+                        "associatedWith": "id"
+                    }
                 }
             },
             "syncable": true,
@@ -254,6 +294,15 @@ export const schema = {
                     "properties": {}
                 },
                 {
+                    "type": "key",
+                    "properties": {
+                        "name": "byUsername",
+                        "fields": [
+                            "username"
+                        ]
+                    }
+                },
+                {
                     "type": "auth",
                     "properties": {
                         "rules": [
@@ -275,5 +324,5 @@ export const schema = {
     },
     "enums": {},
     "nonModels": {},
-    "version": "7a4f5f68c60ebaea3adc04392f53d48e"
+    "version": "93b00d98f1b35ae8de7ab9acd44b31b0"
 };

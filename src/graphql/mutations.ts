@@ -11,8 +11,19 @@ export const createSongRating = /* GraphQL */ `
       id
       userId
       rating
+      songId
       createdAt
       updatedAt
+      song {
+        id
+        name
+        description
+        difficulty
+        band
+        style
+        createdAt
+        updatedAt
+      }
     }
   }
 `;
@@ -25,8 +36,19 @@ export const updateSongRating = /* GraphQL */ `
       id
       userId
       rating
+      songId
       createdAt
       updatedAt
+      song {
+        id
+        name
+        description
+        difficulty
+        band
+        style
+        createdAt
+        updatedAt
+      }
     }
   }
 `;
@@ -39,8 +61,19 @@ export const deleteSongRating = /* GraphQL */ `
       id
       userId
       rating
+      songId
       createdAt
       updatedAt
+      song {
+        id
+        name
+        description
+        difficulty
+        band
+        style
+        createdAt
+        updatedAt
+      }
     }
   }
 `;
@@ -52,8 +85,19 @@ export const createSongSkipped = /* GraphQL */ `
     createSongSkipped(input: $input, condition: $condition) {
       id
       userId
+      songId
       createdAt
       updatedAt
+      song {
+        id
+        name
+        description
+        difficulty
+        band
+        style
+        createdAt
+        updatedAt
+      }
     }
   }
 `;
@@ -65,8 +109,19 @@ export const updateSongSkipped = /* GraphQL */ `
     updateSongSkipped(input: $input, condition: $condition) {
       id
       userId
+      songId
       createdAt
       updatedAt
+      song {
+        id
+        name
+        description
+        difficulty
+        band
+        style
+        createdAt
+        updatedAt
+      }
     }
   }
 `;
@@ -78,8 +133,19 @@ export const deleteSongSkipped = /* GraphQL */ `
     deleteSongSkipped(input: $input, condition: $condition) {
       id
       userId
+      songId
       createdAt
       updatedAt
+      song {
+        id
+        name
+        description
+        difficulty
+        band
+        style
+        createdAt
+        updatedAt
+      }
     }
   }
 `;

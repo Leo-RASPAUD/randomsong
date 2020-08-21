@@ -2,12 +2,16 @@ import React, { useState } from 'react';
 import { View, Button } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useForm } from 'react-hook-form';
-import { Auth } from 'aws-amplify';
+import { Auth, API } from 'aws-amplify';
+import { GraphQLResult, graphqlOperation } from '@aws-amplify/api';
 import Input from '../components/Input';
 import Error from '../components/Error';
 import useUser from '../store/user';
 import Routes from '../navigation/routes';
 import formatErrorMessage from '../utils/formatErrorMessage';
+import { getUserAndSongs, getUserByUsernameAndSongs } from '../graphql/customQueries';
+import { GetUserAndSongsQuery, GetUserByUsernameAndSongsQuery } from '../graphql/customTypes';
+import { UserByUsernameQuery } from '../API';
 
 type FormData = {
   username: string;
@@ -30,12 +34,37 @@ const Login: React.FC = () => {
     setDisplayConfirmationCode(false);
   };
 
-  const onSubmit = async ({ username, password }: FormData) => {
+  const onSubmit = async ({ username: usernameForm, password }: FormData) => {
     setErrorMessage('');
     try {
-      const user = await Auth.signIn(username, password);
-      setUser({ username: user?.attributes?.email });
-      navigation.navigate(Routes.PROFILE);
+      const user = await Auth.signIn(usernameForm, password);
+      console.log(user);
+      const resultGetUser = (await API.graphql(
+        graphqlOperation(getUserByUsernameAndSongs, { username: usernameForm }),
+      )) as GraphQLResult<GetUserByUsernameAndSongsQuery>;
+      console.log(resultGetUser);
+
+      if (resultGetUser?.data?.userByUsername) {
+        const {
+          username,
+          id,
+          email,
+          songsSkipped: songsSkippedResult,
+          songsRating: songsRatingResult,
+        } = resultGetUser?.data?.userByUsername?.items[0];
+        const { items: songsSkipped } = songsSkippedResult || { items: [] };
+        const { items: songsRating } = songsRatingResult || { items: [] };
+
+        setUser({
+          username,
+          id,
+          email,
+          songsSkipped,
+          songsRating,
+        });
+
+        navigation.navigate(Routes.PROFILE);
+      }
     } catch (error) {
       setErrorMessage(formatErrorMessage(error));
     }

@@ -14,6 +14,8 @@ type SongRating
   id: ID!
   userId: ID!
   rating: Int!
+  songId: ID!
+  song: Song @connection(fields: ["songId"])
 }
 
 type SongSkipped
@@ -22,12 +24,14 @@ type SongSkipped
   @key(name: "byUserId", fields: ["userId"]) {
   id: ID!
   userId: ID!
+  songId: ID!
+  song: Song @connection(fields: ["songId"])
 }
 
 type User
   @model
   @auth(rules: [{ allow: private, provider: userPools }])
-  @key(name: "byUsername", fields: ["username"]) {
+  @key(name: "byUsername", fields: ["username"], queryField: "userByUsername") {
   id: ID!
   username: String!
   email: String!

@@ -6,11 +6,14 @@ export type CreateSongRatingInput = {
   id?: string | null,
   userId: string,
   rating: number,
+  songId: string,
+  userSongsRatingId?: string | null,
 };
 
 export type ModelSongRatingConditionInput = {
   userId?: ModelIDInput | null,
   rating?: ModelIntInput | null,
+  songId?: ModelIDInput | null,
   and?: Array< ModelSongRatingConditionInput | null > | null,
   or?: Array< ModelSongRatingConditionInput | null > | null,
   not?: ModelSongRatingConditionInput | null,
@@ -72,6 +75,8 @@ export type UpdateSongRatingInput = {
   id: string,
   userId?: string | null,
   rating?: number | null,
+  songId?: string | null,
+  userSongsRatingId?: string | null,
 };
 
 export type DeleteSongRatingInput = {
@@ -81,10 +86,13 @@ export type DeleteSongRatingInput = {
 export type CreateSongSkippedInput = {
   id?: string | null,
   userId: string,
+  songId: string,
+  userSongsSkippedId?: string | null,
 };
 
 export type ModelSongSkippedConditionInput = {
   userId?: ModelIDInput | null,
+  songId?: ModelIDInput | null,
   and?: Array< ModelSongSkippedConditionInput | null > | null,
   or?: Array< ModelSongSkippedConditionInput | null > | null,
   not?: ModelSongSkippedConditionInput | null,
@@ -93,6 +101,8 @@ export type ModelSongSkippedConditionInput = {
 export type UpdateSongSkippedInput = {
   id: string,
   userId?: string | null,
+  songId?: string | null,
+  userSongsSkippedId?: string | null,
 };
 
 export type DeleteSongSkippedInput = {
@@ -176,6 +186,7 @@ export type ModelSongRatingFilterInput = {
   id?: ModelIDInput | null,
   userId?: ModelIDInput | null,
   rating?: ModelIntInput | null,
+  songId?: ModelIDInput | null,
   and?: Array< ModelSongRatingFilterInput | null > | null,
   or?: Array< ModelSongRatingFilterInput | null > | null,
   not?: ModelSongRatingFilterInput | null,
@@ -184,6 +195,7 @@ export type ModelSongRatingFilterInput = {
 export type ModelSongSkippedFilterInput = {
   id?: ModelIDInput | null,
   userId?: ModelIDInput | null,
+  songId?: ModelIDInput | null,
   and?: Array< ModelSongSkippedFilterInput | null > | null,
   or?: Array< ModelSongSkippedFilterInput | null > | null,
   not?: ModelSongSkippedFilterInput | null,
@@ -197,6 +209,12 @@ export type ModelUserFilterInput = {
   or?: Array< ModelUserFilterInput | null > | null,
   not?: ModelUserFilterInput | null,
 };
+
+export enum ModelSortDirection {
+  ASC = "ASC",
+  DESC = "DESC",
+}
+
 
 export type ModelSongFilterInput = {
   id?: ModelIDInput | null,
@@ -221,8 +239,20 @@ export type CreateSongRatingMutation = {
     id: string,
     userId: string,
     rating: number,
+    songId: string,
     createdAt: string,
     updatedAt: string,
+    song:  {
+      __typename: "Song",
+      id: string,
+      name: string,
+      description: string | null,
+      difficulty: string,
+      band: string,
+      style: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
   } | null,
 };
 
@@ -237,8 +267,20 @@ export type UpdateSongRatingMutation = {
     id: string,
     userId: string,
     rating: number,
+    songId: string,
     createdAt: string,
     updatedAt: string,
+    song:  {
+      __typename: "Song",
+      id: string,
+      name: string,
+      description: string | null,
+      difficulty: string,
+      band: string,
+      style: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
   } | null,
 };
 
@@ -253,8 +295,20 @@ export type DeleteSongRatingMutation = {
     id: string,
     userId: string,
     rating: number,
+    songId: string,
     createdAt: string,
     updatedAt: string,
+    song:  {
+      __typename: "Song",
+      id: string,
+      name: string,
+      description: string | null,
+      difficulty: string,
+      band: string,
+      style: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
   } | null,
 };
 
@@ -268,8 +322,20 @@ export type CreateSongSkippedMutation = {
     __typename: "SongSkipped",
     id: string,
     userId: string,
+    songId: string,
     createdAt: string,
     updatedAt: string,
+    song:  {
+      __typename: "Song",
+      id: string,
+      name: string,
+      description: string | null,
+      difficulty: string,
+      band: string,
+      style: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
   } | null,
 };
 
@@ -283,8 +349,20 @@ export type UpdateSongSkippedMutation = {
     __typename: "SongSkipped",
     id: string,
     userId: string,
+    songId: string,
     createdAt: string,
     updatedAt: string,
+    song:  {
+      __typename: "Song",
+      id: string,
+      name: string,
+      description: string | null,
+      difficulty: string,
+      band: string,
+      style: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
   } | null,
 };
 
@@ -298,8 +376,20 @@ export type DeleteSongSkippedMutation = {
     __typename: "SongSkipped",
     id: string,
     userId: string,
+    songId: string,
     createdAt: string,
     updatedAt: string,
+    song:  {
+      __typename: "Song",
+      id: string,
+      name: string,
+      description: string | null,
+      difficulty: string,
+      band: string,
+      style: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
   } | null,
 };
 
@@ -442,8 +532,20 @@ export type GetSongRatingQuery = {
     id: string,
     userId: string,
     rating: number,
+    songId: string,
     createdAt: string,
     updatedAt: string,
+    song:  {
+      __typename: "Song",
+      id: string,
+      name: string,
+      description: string | null,
+      difficulty: string,
+      band: string,
+      style: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
   } | null,
 };
 
@@ -461,6 +563,7 @@ export type ListSongRatingsQuery = {
       id: string,
       userId: string,
       rating: number,
+      songId: string,
       createdAt: string,
       updatedAt: string,
     } | null > | null,
@@ -477,8 +580,20 @@ export type GetSongSkippedQuery = {
     __typename: "SongSkipped",
     id: string,
     userId: string,
+    songId: string,
     createdAt: string,
     updatedAt: string,
+    song:  {
+      __typename: "Song",
+      id: string,
+      name: string,
+      description: string | null,
+      difficulty: string,
+      band: string,
+      style: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
   } | null,
 };
 
@@ -495,6 +610,7 @@ export type ListSongSkippedsQuery = {
       __typename: "SongSkipped",
       id: string,
       userId: string,
+      songId: string,
       createdAt: string,
       updatedAt: string,
     } | null > | null,
@@ -546,21 +662,26 @@ export type ListUsersQuery = {
   } | null,
 };
 
-export type GetSongQueryVariables = {
-  id: string,
+export type UserByUsernameQueryVariables = {
+  username?: string | null,
+  sortDirection?: ModelSortDirection | null,
+  filter?: ModelUserFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
 };
 
-export type GetSongQuery = {
-  getSong:  {
-    __typename: "Song",
-    id: string,
-    name: string,
-    description: string | null,
-    difficulty: string,
-    band: string,
-    style: string | null,
-    createdAt: string,
-    updatedAt: string,
+export type UserByUsernameQuery = {
+  userByUsername:  {
+    __typename: "ModelUserConnection",
+    items:  Array< {
+      __typename: "User",
+      id: string,
+      username: string,
+      email: string,
+      createdAt: string,
+      updatedAt: string,
+    } | null > | null,
+    nextToken: string | null,
   } | null,
 };
 
@@ -588,14 +709,44 @@ export type ListSongsQuery = {
   } | null,
 };
 
+export type GetSongQueryVariables = {
+  id: string,
+};
+
+export type GetSongQuery = {
+  getSong:  {
+    __typename: "Song",
+    id: string,
+    name: string,
+    description: string | null,
+    difficulty: string,
+    band: string,
+    style: string | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
 export type OnCreateSongRatingSubscription = {
   onCreateSongRating:  {
     __typename: "SongRating",
     id: string,
     userId: string,
     rating: number,
+    songId: string,
     createdAt: string,
     updatedAt: string,
+    song:  {
+      __typename: "Song",
+      id: string,
+      name: string,
+      description: string | null,
+      difficulty: string,
+      band: string,
+      style: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
   } | null,
 };
 
@@ -605,8 +756,20 @@ export type OnUpdateSongRatingSubscription = {
     id: string,
     userId: string,
     rating: number,
+    songId: string,
     createdAt: string,
     updatedAt: string,
+    song:  {
+      __typename: "Song",
+      id: string,
+      name: string,
+      description: string | null,
+      difficulty: string,
+      band: string,
+      style: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
   } | null,
 };
 
@@ -616,8 +779,20 @@ export type OnDeleteSongRatingSubscription = {
     id: string,
     userId: string,
     rating: number,
+    songId: string,
     createdAt: string,
     updatedAt: string,
+    song:  {
+      __typename: "Song",
+      id: string,
+      name: string,
+      description: string | null,
+      difficulty: string,
+      band: string,
+      style: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
   } | null,
 };
 
@@ -626,8 +801,20 @@ export type OnCreateSongSkippedSubscription = {
     __typename: "SongSkipped",
     id: string,
     userId: string,
+    songId: string,
     createdAt: string,
     updatedAt: string,
+    song:  {
+      __typename: "Song",
+      id: string,
+      name: string,
+      description: string | null,
+      difficulty: string,
+      band: string,
+      style: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
   } | null,
 };
 
@@ -636,8 +823,20 @@ export type OnUpdateSongSkippedSubscription = {
     __typename: "SongSkipped",
     id: string,
     userId: string,
+    songId: string,
     createdAt: string,
     updatedAt: string,
+    song:  {
+      __typename: "Song",
+      id: string,
+      name: string,
+      description: string | null,
+      difficulty: string,
+      band: string,
+      style: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
   } | null,
 };
 
@@ -646,8 +845,20 @@ export type OnDeleteSongSkippedSubscription = {
     __typename: "SongSkipped",
     id: string,
     userId: string,
+    songId: string,
     createdAt: string,
     updatedAt: string,
+    song:  {
+      __typename: "Song",
+      id: string,
+      name: string,
+      description: string | null,
+      difficulty: string,
+      band: string,
+      style: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
   } | null,
 };
 

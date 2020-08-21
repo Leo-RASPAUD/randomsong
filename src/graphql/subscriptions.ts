@@ -8,8 +8,19 @@ export const onCreateSongRating = /* GraphQL */ `
       id
       userId
       rating
+      songId
       createdAt
       updatedAt
+      song {
+        id
+        name
+        description
+        difficulty
+        band
+        style
+        createdAt
+        updatedAt
+      }
     }
   }
 `;
@@ -19,8 +30,19 @@ export const onUpdateSongRating = /* GraphQL */ `
       id
       userId
       rating
+      songId
       createdAt
       updatedAt
+      song {
+        id
+        name
+        description
+        difficulty
+        band
+        style
+        createdAt
+        updatedAt
+      }
     }
   }
 `;
@@ -30,8 +52,19 @@ export const onDeleteSongRating = /* GraphQL */ `
       id
       userId
       rating
+      songId
       createdAt
       updatedAt
+      song {
+        id
+        name
+        description
+        difficulty
+        band
+        style
+        createdAt
+        updatedAt
+      }
     }
   }
 `;
@@ -40,8 +73,19 @@ export const onCreateSongSkipped = /* GraphQL */ `
     onCreateSongSkipped {
       id
       userId
+      songId
       createdAt
       updatedAt
+      song {
+        id
+        name
+        description
+        difficulty
+        band
+        style
+        createdAt
+        updatedAt
+      }
     }
   }
 `;
@@ -50,8 +94,19 @@ export const onUpdateSongSkipped = /* GraphQL */ `
     onUpdateSongSkipped {
       id
       userId
+      songId
       createdAt
       updatedAt
+      song {
+        id
+        name
+        description
+        difficulty
+        band
+        style
+        createdAt
+        updatedAt
+      }
     }
   }
 `;
@@ -60,8 +115,19 @@ export const onDeleteSongSkipped = /* GraphQL */ `
     onDeleteSongSkipped {
       id
       userId
+      songId
       createdAt
       updatedAt
+      song {
+        id
+        name
+        description
+        difficulty
+        band
+        style
+        createdAt
+        updatedAt
+      }
     }
   }
 `;

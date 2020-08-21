@@ -8,8 +8,19 @@ export const getSongRating = /* GraphQL */ `
       id
       userId
       rating
+      songId
       createdAt
       updatedAt
+      song {
+        id
+        name
+        description
+        difficulty
+        band
+        style
+        createdAt
+        updatedAt
+      }
     }
   }
 `;
@@ -24,6 +35,7 @@ export const listSongRatings = /* GraphQL */ `
         id
         userId
         rating
+        songId
         createdAt
         updatedAt
       }
@@ -36,8 +48,19 @@ export const getSongSkipped = /* GraphQL */ `
     getSongSkipped(id: $id) {
       id
       userId
+      songId
       createdAt
       updatedAt
+      song {
+        id
+        name
+        description
+        difficulty
+        band
+        style
+        createdAt
+        updatedAt
+      }
     }
   }
 `;
@@ -51,6 +74,7 @@ export const listSongSkippeds = /* GraphQL */ `
       items {
         id
         userId
+        songId
         createdAt
         updatedAt
       }
@@ -93,17 +117,29 @@ export const listUsers = /* GraphQL */ `
     }
   }
 `;
-export const getSong = /* GraphQL */ `
-  query GetSong($id: ID!) {
-    getSong(id: $id) {
-      id
-      name
-      description
-      difficulty
-      band
-      style
-      createdAt
-      updatedAt
+export const userByUsername = /* GraphQL */ `
+  query UserByUsername(
+    $username: String
+    $sortDirection: ModelSortDirection
+    $filter: ModelUserFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    userByUsername(
+      username: $username
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        username
+        email
+        createdAt
+        updatedAt
+      }
+      nextToken
     }
   }
 `;
@@ -125,6 +161,20 @@ export const listSongs = /* GraphQL */ `
         updatedAt
       }
       nextToken
+    }
+  }
+`;
+export const getSong = /* GraphQL */ `
+  query GetSong($id: ID!) {
+    getSong(id: $id) {
+      id
+      name
+      description
+      difficulty
+      band
+      style
+      createdAt
+      updatedAt
     }
   }
 `;

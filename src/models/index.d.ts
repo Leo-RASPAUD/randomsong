@@ -19,6 +19,8 @@ export declare class SongRating {
   readonly id: string;
   readonly userId: string;
   readonly rating: number;
+  readonly songId: string;
+  readonly song?: Song;
   constructor(init: ModelInit<SongRating>);
   static copyOf(source: SongRating, mutator: (draft: MutableModel<SongRating>) => MutableModel<SongRating> | void): SongRating;
 }
@@ -26,6 +28,8 @@ export declare class SongRating {
 export declare class SongSkipped {
   readonly id: string;
   readonly userId: string;
+  readonly songId: string;
+  readonly song?: Song;
   constructor(init: ModelInit<SongSkipped>);
   static copyOf(source: SongSkipped, mutator: (draft: MutableModel<SongSkipped>) => MutableModel<SongSkipped> | void): SongSkipped;
 }

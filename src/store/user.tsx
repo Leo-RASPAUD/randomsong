@@ -5,8 +5,8 @@ export type User = {
   id: string;
   username: string;
   email?: string;
-  songsSkipped: SongSkipped[];
-  songsRating: SongRating[];
+  songsSkipped: SongSkipped[] | never[] | null;
+  songsRating: SongRating[] | never[] | null;
 };
 
 export type UserState = {
