@@ -2,12 +2,16 @@ import React, { useState } from 'react';
 import { View, Button } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useForm } from 'react-hook-form';
-import { Auth } from 'aws-amplify';
+import { Auth, API } from 'aws-amplify';
+import { GraphQLResult, graphqlOperation } from '@aws-amplify/api';
 import Input from '../components/Input';
 import Error from '../components/Error';
 import useUser from '../store/user';
 import Routes from '../navigation/routes';
 import formatErrorMessage from '../utils/formatErrorMessage';
+import { getUserAndSongs, getUserByUsernameAndSongs } from '../graphql/customQueries';
+import { GetUserAndSongsQuery, GetUserByUsernameAndSongsQuery } from '../graphql/customTypes';
+import { UserByUsernameQuery } from '../API';
 
 type FormData = {
   username: string;
@@ -30,12 +34,38 @@ const Login: React.FC = () => {
     setDisplayConfirmationCode(false);
   };
 
-  const onSubmit = async ({ username, password }: FormData) => {
+  const initUser = async ({ username }) => {
+    const resultGetUser = (await API.graphql(
+      graphqlOperation(getUserByUsernameAndSongs, { username }),
+    )) as GraphQLResult<GetUserByUsernameAndSongsQuery>;
+
+    if (resultGetUser?.data?.userByUsername) {
+      const {
+        username,
+        id,
+        email,
+        songsSkipped: songsSkippedResult,
+        songsRating: songsRatingResult,
+      } = resultGetUser?.data?.userByUsername?.items[0];
+      const { items: songsSkipped } = songsSkippedResult || { items: [] };
+      const { items: songsRating } = songsRatingResult || { items: [] };
+
+      setUser({
+        username,
+        id,
+        email,
+        songsSkipped,
+        songsRating,
+      });
+      navigation.navigate(Routes.PROFILE);
+    }
+  };
+
+  const onSubmit = async ({ username: usernameForm, password }: FormData) => {
     setErrorMessage('');
     try {
-      const user = await Auth.signIn(username, password);
-      setUser({ username: user?.attributes?.email });
-      navigation.navigate(Routes.PROFILE);
+      await Auth.signIn(usernameForm, password);
+      initUser({ username: usernameForm });
     } catch (error) {
       setErrorMessage(formatErrorMessage(error));
     }
@@ -51,16 +81,24 @@ const Login: React.FC = () => {
     }
   };
 
-  const confirmNewPassword = async ({ username, confirmationCode, newPassword }: FormData) => {
+  const confirmNewPassword = async ({ username: usernameForm, confirmationCode, newPassword }: FormData) => {
     setErrorMessage('');
     try {
-      await Auth.forgotPasswordSubmit(username, confirmationCode, newPassword);
-      setUser({ username });
+      await Auth.forgotPasswordSubmit(usernameForm, confirmationCode, newPassword);
+      initUser({ username: usernameForm });
       navigation.navigate(Routes.PROFILE);
     } catch (error) {
       setErrorMessage(formatErrorMessage(error));
     }
   };
+
+  // const federatedSignin = async () => {
+  //   try {
+  //     Auth.federatedSignIn({ provider: 'Google' as CognitoHostedUIIdentityProvider });
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   if (displayForgotPassword) {
     return (
@@ -94,11 +132,9 @@ const Login: React.FC = () => {
       {errorMessage.length > 0 && <Error errorMessage={errorMessage} />}
       <Button title="Login" onPress={handleSubmit(onSubmit)} />
       <Button title="Forgot password" onPress={() => setDisplayForgotPassword(true)} />
+      {/* <Button title="Sign in with Google" onPress={federatedSignin} /> */}
     </View>
   );
 };
 
 export default Login;
-
-// idclient: 1067719309360-pdlaarmqeb2a7uche0n0ohvr0sepmc10.apps.googleusercontent.com
-// secret: 4CzdBWeobuwxUXCXwL8iyWSp

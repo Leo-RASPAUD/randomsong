@@ -1,17 +1,12 @@
 {
     "auth": {
-        "randomsong1c2a91d6": {
-            "service": "Cognito",
-            "providerPlugin": "awscloudformation",
-            "dependsOn": []
-        },
         "userPoolGroups": {
             "service": "Cognito-UserPool-Groups",
             "providerPlugin": "awscloudformation",
             "dependsOn": [
                 {
                     "category": "auth",
-                    "resourceName": "randomsong1c2a91d6",
+                    "resourceName": "randomsongdd60e97ddd60e97d",
                     "attributes": [
                         "UserPoolId",
                         "AppClientIDWeb",
@@ -20,6 +15,11 @@
                     ]
                 }
             ]
+        },
+        "randomsongdd60e97ddd60e97d": {
+            "service": "Cognito",
+            "providerPlugin": "awscloudformation",
+            "dependsOn": []
         }
     },
     "api": {

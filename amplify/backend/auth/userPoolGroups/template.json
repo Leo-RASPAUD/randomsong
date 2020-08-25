@@ -1,23 +1,23 @@
 {
     "AWSTemplateFormatVersion": "2010-09-09",
     "Parameters": {
-        "authrandomsong1c2a91d6UserPoolId": {
+        "authrandomsongdd60e97ddd60e97dUserPoolId": {
             "Type": "String",
-            "Default": "authrandomsong1c2a91d6UserPoolId"
+            "Default": "authrandomsongdd60e97ddd60e97dUserPoolId"
         },
         
-        "authrandomsong1c2a91d6IdentityPoolId": {
+        "authrandomsongdd60e97ddd60e97dIdentityPoolId": {
             "Type": "String",
-            "Default": "authrandomsong1c2a91d6IdentityPoolId"
+            "Default": "authrandomsongdd60e97ddd60e97dIdentityPoolId"
         },
         
-        "authrandomsong1c2a91d6AppClientID": {
+        "authrandomsongdd60e97ddd60e97dAppClientID": {
             "Type": "String",
-            "Default": "authrandomsong1c2a91d6AppClientID"
+            "Default": "authrandomsongdd60e97ddd60e97dAppClientID"
         },
-        "authrandomsong1c2a91d6AppClientIDWeb": {
+        "authrandomsongdd60e97ddd60e97dAppClientIDWeb": {
             "Type": "String",
-            "Default": "authrandomsong1c2a91d6AppClientIDWeb"
+            "Default": "authrandomsongdd60e97ddd60e97dAppClientIDWeb"
         },
         "AuthRoleArn": {
             "Type": "String"
@@ -55,7 +55,7 @@
               },
               
               "UserPoolId" : {
-                "Ref": "authrandomsong1c2a91d6UserPoolId"
+                "Ref": "authrandomsongdd60e97ddd60e97dUserPoolId"
               } 
             }
         },
@@ -68,7 +68,7 @@
                         "",
                         [
                           {
-                            "Ref": "authrandomsong1c2a91d6UserPoolId"
+                            "Ref": "authrandomsongdd60e97ddd60e97dUserPoolId"
                           },
                           "-randomsongGroupRole"
                         ]
@@ -85,7 +85,7 @@
                             },
                             "Action": "sts:AssumeRoleWithWebIdentity",
                             "Condition": {
-                              "StringEquals": {"cognito-identity.amazonaws.com:aud": {"Ref":"authrandomsong1c2a91d6IdentityPoolId"}},
+                              "StringEquals": {"cognito-identity.amazonaws.com:aud": {"Ref":"authrandomsongdd60e97ddd60e97dIdentityPoolId"}},
                               "ForAnyValue:StringLike": {"cognito-identity.amazonaws.com:amr": "authenticated"}
                             }
                         }
@@ -111,7 +111,7 @@
                                 "",
                                 [
                                   
-                                  "randomsong1c2a91d6",
+                                  "randomsongdd60e97ddd60e97d",
                                   "-ExecutionRole-",
                                   {
                                     "Ref": "env"
@@ -270,16 +270,16 @@
                     "Ref": "UnauthRoleArn"
                 },
                 "identityPoolId": {
-                    "Ref": "authrandomsong1c2a91d6IdentityPoolId"
+                    "Ref": "authrandomsongdd60e97ddd60e97dIdentityPoolId"
                 },
                 "userPoolId": {
-                    "Ref": "authrandomsong1c2a91d6UserPoolId"
+                    "Ref": "authrandomsongdd60e97ddd60e97dUserPoolId"
                 },
                 "appClientIDWeb": {
-                    "Ref": "authrandomsong1c2a91d6AppClientIDWeb"
+                    "Ref": "authrandomsongdd60e97ddd60e97dAppClientIDWeb"
                 },
                 "appClientID": {
-                    "Ref": "authrandomsong1c2a91d6AppClientID"
+                    "Ref": "authrandomsongdd60e97ddd60e97dAppClientID"
                 },
                 "region": {
                     "Ref": "AWS::Region"

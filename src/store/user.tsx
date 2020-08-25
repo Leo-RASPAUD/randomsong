@@ -1,7 +1,12 @@
 import { createStore, createHook, StoreActionApi } from 'react-sweet-state';
+import { SongRating, SongSkipped } from '../models';
 
 export type User = {
+  id: string;
   username: string;
+  email?: string;
+  songsSkipped: SongSkipped[] | never[] | null;
+  songsRating: SongRating[] | never[] | null;
 };
 
 export type UserState = {
@@ -16,7 +21,6 @@ const initialState: UserState = {
 };
 
 const setUser = (user: User | undefined) => ({ getState, setState }: StoreApi) => {
-  console.log(user);
   setState({
     ...getState(),
     user,
