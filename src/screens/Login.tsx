@@ -34,37 +34,38 @@ const Login: React.FC = () => {
     setDisplayConfirmationCode(false);
   };
 
+  const initUser = async ({ username }) => {
+    const resultGetUser = (await API.graphql(
+      graphqlOperation(getUserByUsernameAndSongs, { username }),
+    )) as GraphQLResult<GetUserByUsernameAndSongsQuery>;
+
+    if (resultGetUser?.data?.userByUsername) {
+      const {
+        username,
+        id,
+        email,
+        songsSkipped: songsSkippedResult,
+        songsRating: songsRatingResult,
+      } = resultGetUser?.data?.userByUsername?.items[0];
+      const { items: songsSkipped } = songsSkippedResult || { items: [] };
+      const { items: songsRating } = songsRatingResult || { items: [] };
+
+      setUser({
+        username,
+        id,
+        email,
+        songsSkipped,
+        songsRating,
+      });
+      navigation.navigate(Routes.PROFILE);
+    }
+  };
+
   const onSubmit = async ({ username: usernameForm, password }: FormData) => {
     setErrorMessage('');
     try {
-      const user = await Auth.signIn(usernameForm, password);
-      console.log(user);
-      const resultGetUser = (await API.graphql(
-        graphqlOperation(getUserByUsernameAndSongs, { username: usernameForm }),
-      )) as GraphQLResult<GetUserByUsernameAndSongsQuery>;
-      console.log(resultGetUser);
-
-      if (resultGetUser?.data?.userByUsername) {
-        const {
-          username,
-          id,
-          email,
-          songsSkipped: songsSkippedResult,
-          songsRating: songsRatingResult,
-        } = resultGetUser?.data?.userByUsername?.items[0];
-        const { items: songsSkipped } = songsSkippedResult || { items: [] };
-        const { items: songsRating } = songsRatingResult || { items: [] };
-
-        setUser({
-          username,
-          id,
-          email,
-          songsSkipped,
-          songsRating,
-        });
-
-        navigation.navigate(Routes.PROFILE);
-      }
+      await Auth.signIn(usernameForm, password);
+      initUser({ username: usernameForm });
     } catch (error) {
       setErrorMessage(formatErrorMessage(error));
     }
@@ -80,11 +81,11 @@ const Login: React.FC = () => {
     }
   };
 
-  const confirmNewPassword = async ({ username, confirmationCode, newPassword }: FormData) => {
+  const confirmNewPassword = async ({ username: usernameForm, confirmationCode, newPassword }: FormData) => {
     setErrorMessage('');
     try {
-      await Auth.forgotPasswordSubmit(username, confirmationCode, newPassword);
-      setUser({ username });
+      await Auth.forgotPasswordSubmit(usernameForm, confirmationCode, newPassword);
+      initUser({ username: usernameForm });
       navigation.navigate(Routes.PROFILE);
     } catch (error) {
       setErrorMessage(formatErrorMessage(error));

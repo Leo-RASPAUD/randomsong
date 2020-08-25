@@ -7,7 +7,6 @@ export type CreateSongRatingInput = {
   userId: string,
   rating: number,
   songId: string,
-  userSongsRatingId?: string | null,
 };
 
 export type ModelSongRatingConditionInput = {
@@ -76,7 +75,6 @@ export type UpdateSongRatingInput = {
   userId?: string | null,
   rating?: number | null,
   songId?: string | null,
-  userSongsRatingId?: string | null,
 };
 
 export type DeleteSongRatingInput = {
@@ -87,7 +85,6 @@ export type CreateSongSkippedInput = {
   id?: string | null,
   userId: string,
   songId: string,
-  userSongsSkippedId?: string | null,
 };
 
 export type ModelSongSkippedConditionInput = {
@@ -102,7 +99,6 @@ export type UpdateSongSkippedInput = {
   id: string,
   userId?: string | null,
   songId?: string | null,
-  userSongsSkippedId?: string | null,
 };
 
 export type DeleteSongSkippedInput = {
