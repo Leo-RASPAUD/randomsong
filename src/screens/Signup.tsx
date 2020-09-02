@@ -1,18 +1,15 @@
+import { Auth } from 'aws-amplify';
 import React, { useState } from 'react';
-import { View, Button } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
 import { useForm } from 'react-hook-form';
-import { Auth, API } from 'aws-amplify';
-import { GraphQLResult, graphqlOperation } from '@aws-amplify/api';
-import Input from '../components/Input';
+import { Button, View } from 'react-native';
+
+import { useNavigation } from '@react-navigation/native';
+
 import Error from '../components/Error';
-import useUser from '../store/user';
+import Input from '../components/Input';
 import Routes from '../navigation/routes';
+import useUser from '../store/user';
 import formatErrorMessage from '../utils/formatErrorMessage';
-import { createUser } from '../graphql/mutations';
-import { getUserAndSongs } from '../graphql/customQueries';
-import { GetUserAndSongsQuery } from '../graphql/customTypes';
-import { CreateUserMutation } from '../API';
 
 interface Error {
   name: string;
@@ -33,7 +30,7 @@ const Login: React.FC = () => {
   const [currentPassword, setCurrentPassword] = useState<string>('');
   const navigation = useNavigation();
 
-  const [, { setUser }] = useUser();
+  const [, { createUser }] = useUser();
 
   const getAuthUser = async () => {
     try {
@@ -45,6 +42,7 @@ const Login: React.FC = () => {
 
   const signUp = async ({ username, password }: FormData) => {
     try {
+      setErrorMessage('');
       await Auth.signUp({
         username,
         password,
@@ -79,36 +77,9 @@ const Login: React.FC = () => {
     try {
       await Auth.confirmSignUp(username, confirmationCode);
       await Auth.signIn(username, currentPassword);
-      const resultCreate = (await API.graphql(
-        graphqlOperation(createUser, { input: { username, email: username } }),
-      )) as GraphQLResult<CreateUserMutation>;
-
-      const resultGetUser = (await API.graphql(
-        graphqlOperation(getUserAndSongs, { id: resultCreate?.data?.createUser?.id }),
-      )) as GraphQLResult<GetUserAndSongsQuery>;
-
-      if (resultGetUser?.data?.getUser) {
-        const {
-          username,
-          id,
-          email,
-          songsSkipped: songsSkippedResult,
-          songsRating: songsRatingResult,
-        } = resultGetUser?.data?.getUser;
-        const { items: songsSkipped } = songsSkippedResult || { items: [] };
-        const { items: songsRating } = songsRatingResult || { items: [] };
-
-        setUser({
-          username,
-          id,
-          email,
-          songsSkipped,
-          songsRating,
-        });
-        navigation.navigate(Routes.PROFILE);
-      } else {
-        cleanup();
-      }
+      await createUser({ username });
+      console.log('after');
+      navigation.navigate(Routes.PROFILE);
     } catch (error) {
       cleanup(error);
     }

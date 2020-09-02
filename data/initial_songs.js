@@ -1,4 +1,4 @@
-[
+export default [
   {
     band: 'Aaron',
     name: 'U-Turn',

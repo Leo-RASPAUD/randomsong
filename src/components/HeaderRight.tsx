@@ -1,10 +1,12 @@
-import * as React from 'react';
-import { StyleSheet } from 'react-native';
-import { Icon, Button } from 'react-native-elements';
-import { useNavigation } from '@react-navigation/native';
 import { Auth } from 'aws-amplify';
-import useUser from '../store/user';
+import React from 'react';
+import { StyleSheet } from 'react-native';
+import { Button, Icon } from 'react-native-elements';
+
+import { useNavigation } from '@react-navigation/native';
+
 import Routes from '../navigation/routes';
+import useUser from '../store/user';
 
 const styles = StyleSheet.create({
   button: { margin: 5 },
