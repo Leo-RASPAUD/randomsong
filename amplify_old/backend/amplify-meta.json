@@ -1,0 +1,18 @@
+{
+    "providers": {
+        "awscloudformation": {
+            "AuthRoleName": "amplify-randomsongnative-dev-132023-authRole",
+            "UnauthRoleArn": "arn:aws:iam::519264136416:role/RandomSong_UnauthRole",
+            "AuthRoleArn": "arn:aws:iam::519264136416:role/RandomSong_auth_role",
+            "Region": "ap-southeast-2",
+            "DeploymentBucketName": "amplify-randomsongnative-dev-132023-deployment",
+            "UnauthRoleName": "amplify-randomsongnative-dev-132023-unauthRole",
+            "StackName": "amplify-randomsongnative-dev-132023",
+            "StackId": "arn:aws:cloudformation:ap-southeast-2:519264136416:stack/amplify-randomsongnative-dev-132023/95222fb0-e9a6-11ea-9507-025411181be4",
+            "AmplifyAppId": "d3utbc8iuxg383"
+        }
+    },
+    "auth": {},
+    "api": {},
+    "function": {}
+}

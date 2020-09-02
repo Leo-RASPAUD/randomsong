@@ -60,6 +60,8 @@ const SongCard: React.FC = () => {
       <Text>{description}</Text>
       <Text>{difficulty}</Text>
       <Text>{band}</Text>
+      <a href={`http://www.songsterr.com/a/wa/bestMatchForQueryString?s=${name}&a=${band}`} target="_blank" rel="noreferrer">Songsterr</a>
+      
       <Text>Average rating: {averageRating === -1 ? 'Not rated yet!' : averageRating}</Text>
       {isSkipped && <Text>already skipped </Text>}
       {user && (

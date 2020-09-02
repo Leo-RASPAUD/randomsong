@@ -480,7 +480,7 @@ export default [
     description: '',
   },
   {
-    band: 'The Servants',
+    band: 'The Servant',
     name: 'Orchestra',
     difficulty: 'medium',
     description: '',

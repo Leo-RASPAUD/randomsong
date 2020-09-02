@@ -1,5 +1,6 @@
 import { allFields as songAllFields, Song } from './Song';
 import { allFields as songRatingAllFields, SongRating } from './SongRating';
+import { allFields as youtubeSuggestionsAllFields, YoutubeSuggestions } from './YoutubeSuggestions';
 
 export type RandomSong = {
   song: Song;
@@ -7,8 +8,7 @@ export type RandomSong = {
   isRated: boolean;
   userRating: SongRating | null;
   averageRating: number;
-  youtubeLink: string | null;
-  songsterrLink: string | null;
+  youtubeSuggestions: YoutubeSuggestions | null;
 };
 
 export const allFields = /* GraphQL */ `
@@ -21,6 +21,7 @@ export const allFields = /* GraphQL */ `
         ${songRatingAllFields}
     }
     averageRating
-    youtubeLink
-    songsterrLink
+    youtubeSuggestions {
+        ${youtubeSuggestionsAllFields}
+    }
 `;
