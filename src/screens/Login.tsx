@@ -1,17 +1,15 @@
+import { Auth } from 'aws-amplify';
 import React, { useState } from 'react';
-import { View, Button } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
 import { useForm } from 'react-hook-form';
-import { Auth, API } from 'aws-amplify';
-import { GraphQLResult, graphqlOperation } from '@aws-amplify/api';
-import Input from '../components/Input';
+import { Button, View } from 'react-native';
+
+import { useNavigation } from '@react-navigation/native';
+
 import Error from '../components/Error';
-import useUser from '../store/user';
+import Input from '../components/Input';
 import Routes from '../navigation/routes';
+import useUser from '../store/user';
 import formatErrorMessage from '../utils/formatErrorMessage';
-import { getUserAndSongs, getUserByUsernameAndSongs } from '../graphql/customQueries';
-import { GetUserAndSongsQuery, GetUserByUsernameAndSongsQuery } from '../graphql/customTypes';
-import { UserByUsernameQuery } from '../API';
 
 type FormData = {
   username: string;
@@ -27,7 +25,7 @@ const Login: React.FC = () => {
   const [displayConfirmationCode, setDisplayConfirmationCode] = useState<boolean>(false);
   const navigation = useNavigation();
 
-  const [, { setUser }] = useUser();
+  const [, { getUserByUsername }] = useUser();
 
   const cancelForgot = () => {
     setDisplayForgotPassword(false);
@@ -35,29 +33,11 @@ const Login: React.FC = () => {
   };
 
   const initUser = async ({ username }) => {
-    const resultGetUser = (await API.graphql(
-      graphqlOperation(getUserByUsernameAndSongs, { username }),
-    )) as GraphQLResult<GetUserByUsernameAndSongsQuery>;
-
-    if (resultGetUser?.data?.userByUsername) {
-      const {
-        username,
-        id,
-        email,
-        songsSkipped: songsSkippedResult,
-        songsRating: songsRatingResult,
-      } = resultGetUser?.data?.userByUsername?.items[0];
-      const { items: songsSkipped } = songsSkippedResult || { items: [] };
-      const { items: songsRating } = songsRatingResult || { items: [] };
-
-      setUser({
-        username,
-        id,
-        email,
-        songsSkipped,
-        songsRating,
-      });
+    try {
+      await getUserByUsername({ username });
       navigation.navigate(Routes.PROFILE);
+    } catch (error) {
+      setErrorMessage(formatErrorMessage('Error while trying to log in, please try again later.'));
     }
   };
 
@@ -85,20 +65,13 @@ const Login: React.FC = () => {
     setErrorMessage('');
     try {
       await Auth.forgotPasswordSubmit(usernameForm, confirmationCode, newPassword);
+      await Auth.signIn(usernameForm, newPassword);
       initUser({ username: usernameForm });
       navigation.navigate(Routes.PROFILE);
     } catch (error) {
       setErrorMessage(formatErrorMessage(error));
     }
   };
-
-  // const federatedSignin = async () => {
-  //   try {
-  //     Auth.federatedSignIn({ provider: 'Google' as CognitoHostedUIIdentityProvider });
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
 
   if (displayForgotPassword) {
     return (
@@ -132,7 +105,6 @@ const Login: React.FC = () => {
       {errorMessage.length > 0 && <Error errorMessage={errorMessage} />}
       <Button title="Login" onPress={handleSubmit(onSubmit)} />
       <Button title="Forgot password" onPress={() => setDisplayForgotPassword(true)} />
-      {/* <Button title="Sign in with Google" onPress={federatedSignin} /> */}
     </View>
   );
 };

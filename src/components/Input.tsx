@@ -1,6 +1,6 @@
 import React from 'react';
-import { Text, TextInput, StyleSheet } from 'react-native';
 import { Controller } from 'react-hook-form';
+import { StyleSheet, Text, TextInput } from 'react-native';
 
 const styles = StyleSheet.create({
   input: { height: 50, backgroundColor: '#ddd', marginBottom: 10, padding: 8 },

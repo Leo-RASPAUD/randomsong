@@ -1,0 +1,14 @@
+#set( $createdAt = $util.time.nowISO8601() )
+$util.qr($context.args.input.put("id", $util.defaultIfNull($ctx.args.input.id, $util.autoId())))
+$util.qr($context.args.input.put("createdAt", $util.defaultIfNull($ctx.args.input.createdAt, $createdAt)))
+$util.qr($context.args.input.put("updatedAt", $util.defaultIfNull($ctx.args.input.updatedAt, $createdAt)))
+
+
+{
+  "version": "2018-05-29",
+  "operation": "PutItem",
+  "key": #if( $modelObjectKey ) $util.toJson($modelObjectKey) #else {
+  "id":   $util.dynamodb.toDynamoDBJson($ctx.args.input.id)
+} #end,
+  "attributeValues": $util.dynamodb.toMapValuesJson($context.args.input)
+}

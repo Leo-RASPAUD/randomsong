@@ -1,48 +1,30 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, Button } from 'react-native';
-import { API } from 'aws-amplify';
-import { GraphQLResult, GRAPHQL_AUTH_MODE } from '@aws-amplify/api';
+import { Text, View } from 'react-native';
 
 import Error from '../components/Error';
-
-import { listSongs } from '../graphql/queries';
-import type { Song } from '../models';
-import { ListSongsQuery } from '../API';
+import SongCard from '../components/SongCard';
 import useSongs from '../store/songs';
-
-const styles = StyleSheet.create({
-  container: { flex: 1, justifyContent: 'center', padding: 20 },
-  name: { marginBottom: 15 },
-  input: { height: 50, backgroundColor: '#ddd', marginBottom: 10, padding: 8 },
-  songName: { fontSize: 18 },
-});
+import useUser from '../store/user';
 
 const Home: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [errorMessage, setErrorMessage] = useState<string>('');
-  const [{ songs, currentSong }, { skipSong, initSongs }] = useSongs();
+  const [{ currentSong }, { fetchRandomSong: fetchRandomSongAction }] = useSongs();
+  const [{ user }] = useUser();
 
-  const fetchSongs = async () => {
+  const fetchRandomSong = async () => {
     try {
-      const songsData = (await API.graphql({
-        query: listSongs,
-        variables: { limit: 500 },
-        authMode: GRAPHQL_AUTH_MODE.AWS_IAM,
-      })) as GraphQLResult<ListSongsQuery>;
-
-      const songs = songsData.data?.listSongs?.items as Song[];
-      initSongs(songs);
+      await fetchRandomSongAction({ userId: user?.id });
       setErrorMessage('');
     } catch (error) {
+      console.log(error);
       setErrorMessage(typeof error === 'string' ? error : 'Unknown error');
     }
     setLoading(false);
   };
 
   useEffect(() => {
-    if (songs.length === 0) {
-      fetchSongs();
-    }
+    fetchRandomSong();
   }, []);
 
   if (errorMessage.length > 0) {
@@ -59,18 +41,7 @@ const Home: React.FC = () => {
 
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      {!loading && currentSong && (
-        <>
-          <Text>Song of the day</Text>
-          <Button onPress={() => skipSong(currentSong)} title=" Get a new song" />
-          <View style={styles.name}>
-            <Text style={styles.songName}>{currentSong.name}</Text>
-            <Text>{currentSong.description}</Text>
-            <Text>{currentSong.difficulty}</Text>
-            <Text>{currentSong.band}</Text>
-          </View>
-        </>
-      )}
+      {!loading && currentSong && <SongCard />}
     </View>
   );
 };

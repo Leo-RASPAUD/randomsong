@@ -1,0 +1,91 @@
+input CreateSongInput {
+  band: String!
+  name: String!
+  difficulty: String!
+  randomId: Int!
+  description: String!
+}
+
+input CreateUserInput {
+  username: String!
+  email: String!
+}
+
+type Mutation {
+  createSong(input: CreateSongInput!): Song
+  createUser(input: CreateUserInput!): User
+  rateSong(input: RateSongInput!): RateSongResult @aws_cognito_user_pools
+  skipSong(input: SkipSongInput!): SkippedSong @aws_cognito_user_pools
+}
+
+type Query {
+  getUserByUsername(username: String!): [User]
+  getRandomSong(userId: String): RandomSong
+}
+
+type RandomSong {
+  song: Song!
+  isSkipped: Boolean!
+  isRated: Boolean!
+  userRating: SongRating
+  averageRating: Float!
+  youtubeLink: String
+  songsterrLink: String
+}
+
+input RateSongInput {
+  songId: ID!
+  userId: ID!
+  rating: Int!
+}
+
+type RateSongResult @aws_cognito_user_pools {
+  averageRating: Float!
+}
+
+input SkipSongInput {
+  userId: ID!
+  songId: ID!
+}
+
+type SkippedSong @aws_cognito_user_pools {
+  songId: ID!
+  userId: ID!
+  song: Song
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+type Song @aws_cognito_user_pools @aws_iam {
+  id: ID!
+  name: String!
+  description: String
+  difficulty: String!
+  band: String!
+  style: String
+  randomId: Int!
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+type SongRating @aws_cognito_user_pools @aws_iam {
+  songId: ID!
+  userId: ID!
+  rating: Int!
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+  song: Song
+}
+
+type User {
+  id: String!
+  username: String!
+  email: String!
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+schema {
+  query: Query
+  mutation: Mutation
+}
