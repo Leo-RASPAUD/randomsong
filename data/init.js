@@ -53,7 +53,6 @@ const init = async () => {
   const resultssss = await Promise.all(mapped);
   fs.writeFileSync('./finalData2.js', JSON.stringify(resultssss));
   // const data3 = require('./finalData2');
-  // console.log(data3);
 };
 
 init();
