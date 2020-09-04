@@ -1,8 +1,8 @@
 import { allFields as youtubeVideoAllFields, YoutubeVideo } from './YoutubeVideo';
 
 export type YoutubeSuggestions = {
-    learnSongVideos: YoutubeVideo[];
-    originalSongVideo: YoutubeVideo;
+  learnSongVideo: YoutubeVideo;
+  originalSongVideo: YoutubeVideo;
 };
 
 export const allFields = /* GraphQL */ `
@@ -12,4 +12,4 @@ export const allFields = /* GraphQL */ `
     originalSongVideo {
         ${youtubeVideoAllFields}
     }
-`
+`;

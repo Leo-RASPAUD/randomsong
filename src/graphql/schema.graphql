@@ -23,6 +23,7 @@ type Mutation {
 type Query {
 	getUserByUsername(username: String!): [User]
 	getRandomSong(userId: String): RandomSong
+	getAverageRating(songId: ID!): Int
 }
 
 type RandomSong {

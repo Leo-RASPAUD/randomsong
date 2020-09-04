@@ -1,5 +1,5 @@
 const AWS = require('aws-sdk');
-const axios = require('axios')
+const axios = require('axios');
 const getSecretValue = require('./getSecretValue');
 
 const COUNT_TABLE = 'Randomsong_SongCount';
@@ -12,7 +12,7 @@ const documentClient = new AWS.DynamoDB.DocumentClient();
 
 let YOUTUBE_API_KEY;
 
-const mapYoutubeResults = item => {
+const mapYoutubeResults = (item) => {
   const id = item.id.videoId;
   const {
     snippet: { title, thumbnails, channelTitle, publishTime },
@@ -24,9 +24,9 @@ const mapYoutubeResults = item => {
     channelTitle,
     publishTime,
   };
-}
+};
 
-const getItemCount = async() => {
+const getItemCount = async () => {
   const params = {
     TableName: COUNT_TABLE,
     KeyConditionExpression: 'id = :countId',
@@ -41,7 +41,7 @@ const getItemCount = async() => {
   return count;
 };
 
-const getSong = async({ randomId }) => {
+const getSong = async ({ randomId }) => {
   const params = {
     TableName: SONG_TABLE,
     IndexName: 'byRandomId',
@@ -57,7 +57,7 @@ const getSong = async({ randomId }) => {
   return result;
 };
 
-const getUserRating = async({ songId, userId }) => {
+const getUserRating = async ({ songId, userId }) => {
   const params = {
     TableName: RATING_TABLE,
     KeyConditionExpression: 'songId = :songId',
@@ -71,13 +71,12 @@ const getUserRating = async({ songId, userId }) => {
   const { Items } = await documentClient.query(params).promise();
   if (Items && Items.length > 0) {
     return Items[0];
-  }
-  else {
+  } else {
     return;
   }
 };
 
-const hasUserSkipped = async({ songId, userId }) => {
+const hasUserSkipped = async ({ songId, userId }) => {
   const params = {
     TableName: SKIPPED_TABLE,
     KeyConditionExpression: 'songId = :songId',
@@ -95,7 +94,7 @@ const hasUserSkipped = async({ songId, userId }) => {
   return false;
 };
 
-const getAverage = async({ songId }) => {
+const getAverage = async ({ songId }) => {
   const params = {
     TableName: RATING_TABLE,
     KeyConditionExpression: 'songId = :songId',
@@ -113,36 +112,33 @@ const getAverage = async({ songId }) => {
   return -1;
 };
 
-const getYoutubeSuggestions = async({ name, band }) => {
+const getYoutubeSuggestions = async ({ name, band }) => {
   if (!YOUTUBE_API_KEY) {
     YOUTUBE_API_KEY = await getSecretValue({
       secretName: 'RandomSong',
       key: 'YOUTUBE_API_KEY',
-    })
+    });
   }
   const baseUrl = 'https://www.googleapis.com/youtube/v3/search';
-  const baseParams = `part=snippet&key=${YOUTUBE_API_KEY}&relevanceLanguage=en`
-  const baseQuery = 'order=viewCount&maxResults=3&q=learn,tab,guitar,lesson'
+  const baseParams = `part=snippet&key=${YOUTUBE_API_KEY}&relevanceLanguage=en`;
+  const baseQuery = 'order=viewCount&maxResults=3&q=learn,tab,guitar,lesson';
   const originalSongQuery = `maxResults=1&q=${name},${band}`;
   const finalBaseUrl = `${baseUrl}?${baseParams}`;
-  const finalUrl = `${finalBaseUrl}&${baseQuery},${name},${band}`
-  const finalSongUrl = `${finalBaseUrl}&${originalSongQuery}`
+  const finalUrl = `${finalBaseUrl}&${baseQuery},${name},${band}`;
+  const finalSongUrl = `${finalBaseUrl}&${originalSongQuery}`;
 
-  const [learnResults, originalSongResults] = await Promise.all([
-    axios.get(finalUrl),
-    axios.get(finalSongUrl)
-    ])
+  const [learnResults, originalSongResults] = await Promise.all([axios.get(finalUrl), axios.get(finalSongUrl)]);
 
-  const originalSongVideo = originalSongResults.data.items.map(mapYoutubeResults)[0]
-  const learnSongVideos = learnResults.data.items.map(mapYoutubeResults)
-  
+  const originalSongVideo = originalSongResults.data.items.map(mapYoutubeResults)[0];
+  const learnSongVideos = learnResults.data.items.map(mapYoutubeResults);
+
   return {
     learnSongVideos,
     originalSongVideo,
-  }
-}
+  };
+};
 
-exports.handler = async({ arguments: { userId } }) => {
+exports.handler = async ({ arguments: { userId } }) => {
   const itemCount = await getItemCount();
   const randomId = Math.floor(Math.random() * itemCount);
   const song = await getSong({ randomId });
@@ -161,8 +157,8 @@ exports.handler = async({ arguments: { userId } }) => {
 
   const isRated = userRating !== undefined;
 
-  const youtubeSuggestions = await getYoutubeSuggestions({ name: song.name, band: song.band })
-  
+  const youtubeSuggestions = await getYoutubeSuggestions({ name: song.name, band: song.band });
+
   return {
     song,
     isSkipped,

@@ -8,7 +8,7 @@ export type RandomSong = {
   isRated: boolean;
   userRating: SongRating | null;
   averageRating: number;
-  youtubeSuggestions: YoutubeSuggestions | null;
+  youtubeSuggestions: YoutubeSuggestions;
 };
 
 export const allFields = /* GraphQL */ `
