@@ -26,8 +26,6 @@ const getYoutubeSuggestions = async ({ name, band }) => {
   const finalBaseUrl = `${baseUrl}?${baseParams}`;
   const finalUrl = `${finalBaseUrl}&${baseQuery},${name},${band}`;
   const finalSongUrl = `${finalBaseUrl}&${originalSongQuery}`;
-  console.log(finalUrl);
-  console.log(finalSongUrl);
 
   try {
     const [learnResults, originalSongResults] = await Promise.all([axios.get(finalUrl), axios.get(finalSongUrl)]);
