@@ -2,7 +2,7 @@ import { createHook, createStore, StoreActionApi } from 'react-sweet-state';
 
 import { GRAPHQL_AUTH_MODE } from '@aws-amplify/api';
 
-import songsData from '../../data/initial_songs';
+import songsData from '../../data/finalData';
 import { skipSong as skipSongAction } from '../graphql/mutations/SkippedSong';
 import { createSong, rateSong as rateSongAction } from '../graphql/mutations/Song';
 import { getRandomSong } from '../graphql/queries/Song';

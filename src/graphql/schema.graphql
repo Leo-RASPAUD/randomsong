@@ -1,120 +1,134 @@
 input CreateSongInput {
-	band: String!
-	name: String!
-	difficulty: String!
-	randomId: Int!
-	description: String!
+  band: String!
+  name: String!
+  difficulty: String!
+  randomId: Int!
+  description: String!
+  learnSongVideos: [YoutubeVideoInput]!
+  originalSongVideo: YoutubeVideoInput!
 }
 
 input CreateUserInput {
-	username: String!
-	email: String!
+  username: String!
+  email: String!
 }
 
 type Mutation {
-	createSong(input: CreateSongInput!): Song
-	createUser(input: CreateUserInput!): User
-	rateSong(input: RateSongInput!): RateSongResult
-		@aws_cognito_user_pools
-	skipSong(input: SkipSongInput!): SkippedSong
-		@aws_cognito_user_pools
+  createSong(input: CreateSongInput!): Song
+  createUser(input: CreateUserInput!): User
+  rateSong(input: RateSongInput!): RateSongResult @aws_cognito_user_pools
+  skipSong(input: SkipSongInput!): SkippedSong @aws_cognito_user_pools
 }
 
 type Query {
-	getUserByUsername(username: String!): [User]
-	getRandomSong(userId: String): RandomSong
-	getAverageRating(songId: ID!): Int
+  getUserByUsername(username: String!): [User]
+  getRandomSong(userId: String): RandomSong @aws_iam @aws_cognito_user_pools
+  getAverageRating(songId: ID!): Int
 }
 
-type RandomSong {
-	song: Song!
-	isSkipped: Boolean!
-	isRated: Boolean!
-	userRating: SongRating
-	averageRating: Float!
-	youtubeSuggestions: YoutubeSuggestions
+type RandomSong @aws_iam @aws_cognito_user_pools {
+  song: Song!
+  isSkipped: Boolean!
+  isRated: Boolean!
+  userRating: SongRating
+  averageRating: Float!
 }
 
 input RateSongInput {
-	songId: ID!
-	userId: ID!
-	rating: Int!
+  songId: ID!
+  userId: ID!
+  rating: Int!
 }
 
 type RateSongResult @aws_cognito_user_pools {
-	averageRating: Float!
+  averageRating: Float!
 }
 
 input SkipSongInput {
-	userId: ID!
-	songId: ID!
+  userId: ID!
+  songId: ID!
 }
 
 type SkippedSong @aws_cognito_user_pools {
-	songId: ID!
-	userId: ID!
-	song: Song
-	createdAt: AWSDateTime!
-	updatedAt: AWSDateTime!
+  songId: ID!
+  userId: ID!
+  song: Song
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
 }
 
-type Song @aws_cognito_user_pools
-@aws_iam {
-	id: ID!
-	name: String!
-	description: String
-	difficulty: String!
-	band: String!
-	style: String
-	randomId: Int!
-	createdAt: AWSDateTime!
-	updatedAt: AWSDateTime!
+type Song @aws_cognito_user_pools @aws_iam {
+  id: ID!
+  name: String!
+  description: String
+  difficulty: String!
+  band: String!
+  style: String
+  randomId: Int!
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+  learnSongVideos: [YoutubeVideo]
+  originalSongVideo: YoutubeVideo
 }
 
-type SongRating @aws_cognito_user_pools
-@aws_iam {
-	songId: ID!
-	userId: ID!
-	rating: Int!
-	createdAt: AWSDateTime!
-	updatedAt: AWSDateTime!
-	song: Song
+type SongRating @aws_cognito_user_pools @aws_iam {
+  songId: ID!
+  userId: ID!
+  rating: Int!
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+  song: Song
 }
 
-type Thumbnail {
-	url: String
-	width: Int
-	height: Int
+type Thumbnail @aws_iam @aws_cognito_user_pools {
+  url: String
+  width: Int
+  height: Int
 }
 
-type Thumbnails {
-	default: Thumbnail
-	medium: Thumbnail
-	high: Thumbnail
+input ThumbnailInput {
+  url: String
+  width: Int
+  height: Int
+}
+
+type Thumbnails @aws_iam @aws_cognito_user_pools {
+  default: Thumbnail
+  medium: Thumbnail
+  high: Thumbnail
+}
+
+input ThumbnailsInput {
+  default: ThumbnailInput
+  medium: ThumbnailInput
+  high: ThumbnailInput
 }
 
 type User {
-	id: String!
-	username: String!
-	email: String!
-	createdAt: AWSDateTime!
-	updatedAt: AWSDateTime!
+  id: String!
+  username: String!
+  email: String!
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
 }
 
-type YoutubeSuggestions {
-	learnSongVideos: [YoutubeVideo]
-	originalSongVideo: YoutubeVideo
+type YoutubeVideo @aws_iam @aws_cognito_user_pools {
+  id: String
+  title: String
+  channelTitle: String
+  publishTime: String
+  thumbnails: Thumbnails
 }
 
-type YoutubeVideo {
-	id: String
-	title: String
-	channelTitle: String
-	publishTime: String
-	thumbnails: Thumbnails
+input YoutubeVideoInput {
+  id: String
+  title: String
+  channelTitle: String
+  publishTime: String
+  thumbnails: ThumbnailsInput
 }
 
 schema {
-	query: Query
-	mutation: Mutation
+  query: Query
+  mutation: Mutation
 }
