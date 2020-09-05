@@ -24,6 +24,8 @@ type Query {
   getUserByUsername(username: String!): [User]
   getRandomSong(userId: String): RandomSong @aws_iam @aws_cognito_user_pools
   getAverageRating(songId: ID!): Int
+  getSkippedSongsByUser(userId: ID!): [SkippedSong] @aws_cognito_user_pools
+  getSongRatingsByUser(userId: ID!): [SongRating] @aws_cognito_user_pools
 }
 
 type RandomSong @aws_iam @aws_cognito_user_pools {
