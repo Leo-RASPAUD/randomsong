@@ -5,6 +5,8 @@ import { AirbnbRating } from 'react-native-elements';
 import RATINGS from '../constants/ratings';
 import useSongs from '../store/songs';
 import useUser from '../store/user';
+import OriginalYoutubeVideo from './OriginalYoutubeVideo';
+import YoutubeSuggestions from './YoutubeSuggestions';
 
 const SongCard: React.FC = () => {
   const [{ currentSong }, { rateSong: rateSongAction, skipSong: skipSongAction, fetchRandomSong }] = useSongs();
@@ -45,7 +47,7 @@ const SongCard: React.FC = () => {
     averageRating,
     userRating,
     isSkipped,
-    song: { difficulty, description, band, name },
+    song: { difficulty, description, band, name, originalSongVideo, learnSongVideos },
   } = currentSong;
 
   useEffect(() => {
@@ -60,6 +62,15 @@ const SongCard: React.FC = () => {
       <Text>{description}</Text>
       <Text>{difficulty}</Text>
       <Text>{band}</Text>
+      <a
+        href={`http://www.songsterr.com/a/wa/bestMatchForQueryString?s=${name}&a=${band}`}
+        target="_blank"
+        rel="noreferrer"
+      >
+        Songsterr link
+      </a>
+      <OriginalYoutubeVideo data={originalSongVideo} />
+      <YoutubeSuggestions data={learnSongVideos} />
       <Text>Average rating: {averageRating === -1 ? 'Not rated yet!' : averageRating}</Text>
       {isSkipped && <Text>already skipped </Text>}
       {user && (

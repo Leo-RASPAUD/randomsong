@@ -7,8 +7,6 @@ export type RandomSong = {
   isRated: boolean;
   userRating: SongRating | null;
   averageRating: number;
-  youtubeLink: string | null;
-  songsterrLink: string | null;
 };
 
 export const allFields = /* GraphQL */ `
@@ -21,6 +19,4 @@ export const allFields = /* GraphQL */ `
         ${songRatingAllFields}
     }
     averageRating
-    youtubeLink
-    songsterrLink
 `;

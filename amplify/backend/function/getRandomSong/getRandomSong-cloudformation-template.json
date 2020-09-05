@@ -33,12 +33,12 @@
 				"FunctionName": {
 					"Fn::If": [
 						"ShouldNotCreateEnvResources",
-						"getSongAverageRating",
+						"getRandomSong",
 						{
 							"Fn::Join": [
 								"",
 								[
-									"getSongAverageRating",
+									"getRandomSong",
 									"-",
 									{
 										"Ref": "env"
@@ -68,8 +68,8 @@
 				"Layers": [],
 				"Timeout": "25",
 				"Code": {
-					"S3Bucket": "amplify-randomsongnative-dev-132023-deployment",
-					"S3Key": "amplify-builds/randomsongnative3168da4a-366f77385849496a5738-build.zip"
+					"S3Bucket": "amplify-randomsong-dev-144114-deployment",
+					"S3Key": "amplify-builds/getRandomSong-767743796b657a536974-build.zip"
 				}
 			}
 		},
@@ -79,12 +79,12 @@
 				"RoleName": {
 					"Fn::If": [
 						"ShouldNotCreateEnvResources",
-						"randomsongnativeLambdaRolec27865b8",
+						"randomsongLambdaRole783f4a77",
 						{
 							"Fn::Join": [
 								"",
 								[
-									"randomsongnativeLambdaRolec27865b8",
+									"randomsongLambdaRole783f4a77",
 									"-",
 									{
 										"Ref": "env"
@@ -158,9 +158,24 @@
 								"dynamodb:Query"
 							],
 							"Resource": [
+								"arn:aws:dynamodb:ap-southeast-2:519264136416:table/Randomsong_SongCount",
+								"arn:aws:dynamodb:ap-southeast-2:519264136416:table/Randomsong_User",
 								"arn:aws:dynamodb:ap-southeast-2:519264136416:table/Randomsong_SongRating",
+								"arn:aws:dynamodb:ap-southeast-2:519264136416:table/Randomsong_SkippedSong",
+								"arn:aws:dynamodb:ap-southeast-2:519264136416:table/Randomsong_Song",
+								"arn:aws:dynamodb:ap-southeast-2:519264136416:table/Randomsong_Song/index/byRandomId",
 								"arn:aws:dynamodb:ap-southeast-2:519264136416:table/Randomsong_SongRating/index/byUserId",
-								"arn:aws:dynamodb:ap-southeast-2:519264136416:table/Randomsong_SongRating/index/bySongId"
+								"arn:aws:dynamodb:ap-southeast-2:519264136416:table/Randomsong_SkippedSong/index/byUserId"
+							]
+						},
+						{
+							"Effect": "Allow",
+							"Action": [
+								"secretsmanager:Get",
+								"secretsmanager:GetSecretValue"
+							],
+							"Resource": [
+								"arn:aws:secretsmanager:ap-southeast-2:519264136416:secret:RandomSong-CbCfux"
 							]
 						}
 					]

@@ -4,6 +4,8 @@ input CreateSongInput {
   difficulty: String!
   randomId: Int!
   description: String!
+  learnSongVideos: [YoutubeVideoInput]!
+  originalSongVideo: YoutubeVideoInput!
 }
 
 input CreateUserInput {
@@ -20,17 +22,16 @@ type Mutation {
 
 type Query {
   getUserByUsername(username: String!): [User]
-  getRandomSong(userId: String): RandomSong
+  getRandomSong(userId: String): RandomSong @aws_iam @aws_cognito_user_pools
+  getAverageRating(songId: ID!): Int
 }
 
-type RandomSong {
+type RandomSong @aws_iam @aws_cognito_user_pools {
   song: Song!
   isSkipped: Boolean!
   isRated: Boolean!
   userRating: SongRating
   averageRating: Float!
-  youtubeLink: String
-  songsterrLink: String
 }
 
 input RateSongInput {
@@ -66,6 +67,8 @@ type Song @aws_cognito_user_pools @aws_iam {
   randomId: Int!
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
+  learnSongVideos: [YoutubeVideo]
+  originalSongVideo: YoutubeVideo
 }
 
 type SongRating @aws_cognito_user_pools @aws_iam {
@@ -77,12 +80,52 @@ type SongRating @aws_cognito_user_pools @aws_iam {
   song: Song
 }
 
+type Thumbnail @aws_iam @aws_cognito_user_pools {
+  url: String
+  width: Int
+  height: Int
+}
+
+input ThumbnailInput {
+  url: String
+  width: Int
+  height: Int
+}
+
+type Thumbnails @aws_iam @aws_cognito_user_pools {
+  default: Thumbnail
+  medium: Thumbnail
+  high: Thumbnail
+}
+
+input ThumbnailsInput {
+  default: ThumbnailInput
+  medium: ThumbnailInput
+  high: ThumbnailInput
+}
+
 type User {
   id: String!
   username: String!
   email: String!
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
+}
+
+type YoutubeVideo @aws_iam @aws_cognito_user_pools {
+  id: String
+  title: String
+  channelTitle: String
+  publishTime: String
+  thumbnails: Thumbnails
+}
+
+input YoutubeVideoInput {
+  id: String
+  title: String
+  channelTitle: String
+  publishTime: String
+  thumbnails: ThumbnailsInput
 }
 
 schema {

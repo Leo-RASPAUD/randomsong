@@ -33,12 +33,12 @@
 				"FunctionName": {
 					"Fn::If": [
 						"ShouldNotCreateEnvResources",
-						"getRandomSong",
+						"getAverageRating",
 						{
 							"Fn::Join": [
 								"",
 								[
-									"getRandomSong",
+									"getAverageRating",
 									"-",
 									{
 										"Ref": "env"
@@ -68,8 +68,8 @@
 				"Layers": [],
 				"Timeout": "25",
 				"Code": {
-					"S3Bucket": "amplify-randomsongnative-dev-132023-deployment",
-					"S3Key": "amplify-builds/randomSongNative-45672b34786d44674877-build.zip"
+					"S3Bucket": "amplify-randomsong-dev-144114-deployment",
+					"S3Key": "amplify-builds/getAverageRatin-7438354f35364f6c326d-build.zip"
 				}
 			}
 		},
@@ -79,12 +79,12 @@
 				"RoleName": {
 					"Fn::If": [
 						"ShouldNotCreateEnvResources",
-						"randomsongnativeLambdaRoleaa001de1",
+						"randomsongLambdaRole33a0ff5d",
 						{
 							"Fn::Join": [
 								"",
 								[
-									"randomsongnativeLambdaRoleaa001de1",
+									"randomsongLambdaRole33a0ff5d",
 									"-",
 									{
 										"Ref": "env"
@@ -158,16 +158,8 @@
 								"dynamodb:Query"
 							],
 							"Resource": [
-								"arn:aws:dynamodb:ap-southeast-2:519264136416:table/Randomsong_SongCount",
-								"arn:aws:dynamodb:ap-southeast-2:519264136416:table/Randomsong_User",
 								"arn:aws:dynamodb:ap-southeast-2:519264136416:table/Randomsong_SongRating",
-								"arn:aws:dynamodb:ap-southeast-2:519264136416:table/Randomsong_SkippedSong",
-								"arn:aws:dynamodb:ap-southeast-2:519264136416:table/Randomsong_Song",
-								"arn:aws:dynamodb:ap-southeast-2:519264136416:table/Randomsong_Song/index/byRandomId",
-								"arn:aws:dynamodb:ap-southeast-2:519264136416:table/Randomsong_SongRating/index/byUserId",
-								"arn:aws:dynamodb:ap-southeast-2:519264136416:table/Randomsong_SongRating/index/bySongId",
-								"arn:aws:dynamodb:ap-southeast-2:519264136416:table/Randomsong_SkippedSong/index/bySongId",
-								"arn:aws:dynamodb:ap-southeast-2:519264136416:table/Randomsong_SkippedSong/index/bySongId"
+								"arn:aws:dynamodb:ap-southeast-2:519264136416:table/Randomsong_SongRating/index/byUserId"
 							]
 						}
 					]

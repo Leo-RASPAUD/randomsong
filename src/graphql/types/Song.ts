@@ -1,4 +1,5 @@
 import { RandomSong } from './RandomSong';
+import { allFields as youtubeVideoAllFields, YoutubeVideo } from './YoutubeVideo';
 
 export type Song = {
   id?: string | null;
@@ -10,6 +11,8 @@ export type Song = {
   randomId: number;
   createdAt: string;
   updatedAt: string;
+  learnSongVideos: [YoutubeVideo];
+  originalSongVideo: YoutubeVideo;
 };
 
 export type GetRandomSongQuery = {
@@ -32,4 +35,10 @@ export const allFields = /* GraphQL */ `
     randomId
     createdAt
     updatedAt
+    learnSongVideos {
+      ${youtubeVideoAllFields}
+    }
+    originalSongVideo {
+      ${youtubeVideoAllFields}
+    }
 `;

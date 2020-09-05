@@ -1,14 +1,12 @@
 {
-	"auth": {},
-	"api": {},
 	"function": {
-		"randomSongNative": {
+		"getAverageRatin": {
 			"build": true,
 			"providerPlugin": "awscloudformation",
 			"service": "Lambda",
 			"dependsOn": []
 		},
-		"randomsongnative3168da4a": {
+		"getRandomSong": {
 			"build": true,
 			"providerPlugin": "awscloudformation",
 			"service": "Lambda",

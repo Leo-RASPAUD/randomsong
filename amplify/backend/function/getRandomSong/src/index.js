@@ -1,5 +1,5 @@
 const AWS = require('aws-sdk');
-
+const axios = require('axios');
 const COUNT_TABLE = 'Randomsong_SongCount';
 const SONG_TABLE = 'Randomsong_Song';
 const RATING_TABLE = 'Randomsong_SongRating';
@@ -99,6 +99,8 @@ exports.handler = async ({ arguments: { userId } }) => {
   const randomId = Math.floor(Math.random() * itemCount);
   const song = await getSong({ randomId });
   const { id: songId } = song;
+  // const songId = "3cd38f2b-ffce-4cf8-8713-69e05024321f"
+  // const userId = "3b79fc38-0fe2-4df6-a658-2fa49ab27ebc"
   const averageRating = await getAverage({ songId });
 
   let userRating;
@@ -112,13 +114,12 @@ exports.handler = async ({ arguments: { userId } }) => {
   }
 
   const isRated = userRating !== undefined;
+
   return {
     song,
     isSkipped,
     isRated,
     userRating,
     averageRating,
-    youtubeLink: '',
-    songsterrLink: '',
   };
 };
