@@ -1,3 +1,6 @@
+import { SkippedSong } from './SkippedSong';
+import { SongRating } from './SongRating';
+
 export type User = {
   id: string;
   username: string;
@@ -12,6 +15,11 @@ export type GetUserByUsernameQuery = {
 
 export type CreateUserMutation = {
   createUser: User | null;
+};
+
+export type GetUserSongDataQuery = {
+  getSkippedSongsByUser: [SkippedSong];
+  getSongRatingsByUser: [SongRating];
 };
 
 export type GetUserByUsernameVariables = {

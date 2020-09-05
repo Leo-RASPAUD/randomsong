@@ -69,20 +69,6 @@ const rateSong = ({ userId, songId, rating }: RateSong) => async ({ getState, se
       },
     });
   }
-  // let createdUserRating: SongRating | null | undefined;
-  // if (ratingId) {
-  //   await API.graphql(graphqlOperation(updateSongRating, { input: { id: ratingId, userId, songId, rating } }));
-  // } else {
-  //   const resultCreate = (await API.graphql(
-  //     graphqlOperation(createSongRating, { input: { userId, songId, rating } }),
-  //   )) as GraphQLResult<CreateSongRatingMutation>;
-  //   createdUserRating = resultCreate.data?.createSongRating as SongRating;
-  // }
-  // const resultGetAverageRating = (await API.graphql(
-  //   graphqlOperation(getSongAverageRating, { songId }),
-  // )) as GraphQLResult<GetSongAverageRatingQuery>;
-  // const averageRating = resultGetAverageRating?.data?.getSongAverageRating || 0;
-  // const { currentSong } = getState();
 };
 
 const skipSong = ({ userId, songId }: { userId: string; songId: string }) => async () => {

@@ -3,8 +3,14 @@ import { createHook, createStore, StoreActionApi } from 'react-sweet-state';
 import { GRAPHQL_AUTH_MODE } from '@aws-amplify/api';
 
 import { createUser as createUserAction } from '../graphql/mutations/User';
-import { getUserByUsername as getUserByUsernameQuery } from '../graphql/queries/User';
-import { CreateUserMutation, GetUserByUsernameQuery } from '../graphql/types/User';
+import {
+    getUserByUsername as getUserByUsernameQuery, getUserSongDataQuery
+} from '../graphql/queries/User';
+import { SkippedSong } from '../graphql/types/SkippedSong';
+import { SongRating } from '../graphql/types/SongRating';
+import {
+    CreateUserMutation, GetUserByUsernameQuery, GetUserSongDataQuery
+} from '../graphql/types/User';
 import callGraphQL from '../utils/callGraphQL';
 
 export type User = {
@@ -15,6 +21,8 @@ export type User = {
 
 export type UserState = {
   user: User | null;
+  skippedSongs: SkippedSong[];
+  songRatings: SongRating[];
 };
 
 type StoreApi = StoreActionApi<UserState>;
@@ -22,6 +30,8 @@ type Actions = typeof actions;
 
 const initialState: UserState = {
   user: null,
+  songRatings: [],
+  skippedSongs: [],
 };
 
 const setInitialUserState = (state: UserState) => ({ setState }: StoreApi) => {
@@ -30,6 +40,25 @@ const setInitialUserState = (state: UserState) => ({ setState }: StoreApi) => {
 
 const clearUser = () => ({ setState }: StoreApi) => {
   setState(initialState);
+};
+
+const getUserSongData = ({ userId }: { userId: string }) => async ({ setState, getState }: StoreApi) => {
+  const queryResult = await callGraphQL<GetUserSongDataQuery>(
+    getUserSongDataQuery,
+    {
+      userId,
+    },
+    GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS,
+  );
+
+  const skippedSongs = queryResult.data?.getSkippedSongsByUser;
+  const songRatings = queryResult.data?.getSongRatingsByUser;
+
+  setState({
+    ...getState(),
+    skippedSongs,
+    songRatings,
+  });
 };
 
 const getUserByUsername = ({ username }: { username: string }) => async ({ setState, getState }: StoreApi) => {
@@ -86,6 +115,7 @@ const actions = {
   createUser,
   getUserByUsername,
   setUser,
+  getUserSongData,
 };
 
 const Store = createStore<UserState, Actions>({
